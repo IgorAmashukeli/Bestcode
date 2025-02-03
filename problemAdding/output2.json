@@ -1,0 +1,58 @@
+{
+  "id": 1,
+  "course": "/math/logic",
+  "title": "Quantifiers validities",
+  "difficulty": "Easy",
+  "video_id": "y3svPgyGnLc",
+  "accepted": 0,
+  "submitted": 0,
+  "description_text": "This is task to prove, using <b>LEAN 4</b> language. <br> Proofs should be done, by writing constructive <b>proof terms with the help of propositional constructors and destructors</b>. <br> In each math problem you will be given a list of permitted constructors, destructors and theorems. <br> To proof each theorem, remove <b>\"sorry\"</b> and replace it with <b>proof term</b>. <br> <br> You can use following constructors and destructors <br><br><i>Constructor and destructor for universal quantifier:</i><br><i>Constructor: </i> <b> fun (x : α) => u </b> creates <b> ∀ x : α, u</b> proposition from <b>α</b> and <b>u</b> proposition, where u can depend on x</br><i>Destructor: </i> <b> (h : ∀ x : α, u) (x₀ : α) </b> creates <b>u[x₀/x]</b> (u, where all free x variables are replaced with x₀) proposition from <b>∀ x : α, u</b> proposition and <b>x₀ : α</b> term <br><br><i>Constructor and destructor for existential quantifier:</i><br><i>Constructor: </i> <b> Exists.intro (x₀ : α) P </b> creates <b>∃ x : α, P</b> proposition from <b>x₀ : α </b> term and  <b> P </b  proposition, where P can depend on x₀<br><i>Destructor: </i> <b> Exists.elim (h : ∃ x : α, P) (g : ∀ x : α, P → q) </b> creates <b>q</b> proposition from <b>∃ x : α, P </b> proposition and <b>∀ x : α, P → q</b> proposition<br>If you know that Inhabited α, you can also use Inhabited.default : α constructorYou can also use all the constructors and destructors for the propositional theorems and use previously proved theorems",
+  "examples": [],
+  "constraints": [],
+  "note": "Note that you can only use <b>ByContradiction</b> for the theorems, defined after <i>open Classical</i>. <br> <br> For reference, see this documentation: <a href=\"https://leanprover.github.io/theorem_proving_in_lean4/title_page.html\">LEAN 4 proving</a>",
+  "languages": [
+    [
+      "LEAN",
+      "lean"
+    ]
+  ],
+  "initial_codes": {
+    "lean": "--your proof starts here\n\ntheorem uni : ∀ _ : α, True := sorry\n\ntheorem exi_uni_then_uni (P : α → Prop) : (∃ _ : α, ∀ x : α, P x) → (∀ x : α, P x) := sorry\n\ntheorem exi_exi_then_exi (P : α → Prop) : (∃ _ : α, ∃ x : α, P x) → (∃ x : α, P x) := sorry\n\ntheorem uni_uni_then_uni (P : α → Prop) : (∀ _ : α, ∀ x : α, P x) → (∀ x : α, P x) := sorry\n\ntheorem change_variable_uni (P: α → Prop) : (∀ x : α, P x) ↔ (∀ y : α, P y) := sorry\n\ntheorem change_variable_exi (P: α → Prop) : (∃ x : α, P x) ↔ (∃ y : α, P y) := sorry\n\ntheorem uni_congr (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∀ x : α, P x) ↔ (∀ x : α, Q x)) := sorry\n\ntheorem exi_congr (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∃ x : α, P x) ↔ (∃ x: α, Q x)) := sorry\n\ntheorem uni_comm (P : α →  β → Prop) : (∀ x : α, ∀ y : β, P x y) ↔ (∀ y : β, ∀ x : α, P x y) := sorry\n\ntheorem exi_comm (P : α → β → Prop) : (∃ x : α, ∃ y : β, P x y) ↔ (∃ y : β, ∃ x : α, P x y) := sorry\n\ntheorem exi_uni_then_uni_exi (P : α → β → Prop) : (∃ x : α, ∀ y : β, P x y) → (∀ y : β, ∃ x : α, P x y) := sorry\n\ntheorem uni_conj (P Q: α → Prop) : (∀ x: α, P x ∧ Q x) ↔ (∀ x : α, P x) ∧ (∀ x : α, Q x) := sorry\n\ntheorem exi_disj (P Q : α → Prop) : (∃ x : α, P x ∨ Q x) ↔ (∃ x : α, P x) ∨ (∃ x: α, Q x) := sorry\n\ntheorem morgan_uni (P : α → Prop) : (∀ x : α, ¬ P x) ↔ (¬ ∃ x : α, P x) := sorry\n\ntheorem morgan_exi_mp (P : α → Prop) : (∃ x : α, ¬ P x) →  (¬ ∀ x : α, P x) := sorry\n\ntheorem brackets_exi_conj (P : Prop) (Q : α → Prop) : (∃ x : α, P ∧ Q x) ↔ (P ∧ ∃ x : α, Q x) := sorry\n\ntheorem brackets_uni_conj_mpr (P : Prop) (Q : α → Prop) : (P ∧ ∀ x : α, Q x) → (∀ x : α, P ∧ Q x) := sorry\n\ntheorem brackets_exi_disj_mp (P : Prop) (Q : α → Prop) : (∃ x : α, P ∨ Q x) → (P ∨ ∃ x : α, Q x) := sorry\n\ntheorem brackets_uni_disj_mpr (P : Prop) (Q : α → Prop) : (P ∨ ∀ x : α, Q x) → (∀ x : α, P ∨ Q x) := sorry\n\ntheorem brackets_left_uni_impl (P : Prop) (Q : α → Prop) : (P → ∀ x : α, Q x) ↔ (∀ x : α, (P → Q x)) := sorry\n\ntheorem brackets_left_exi_impl_mpr (P : Prop) (Q : α → Prop) : (∃ x : α, (P → Q x)) → (P → ∃ x : α, Q x) := sorry\n\ntheorem brackets_right_uni_impl_mpr (P : α → Prop) (Q : Prop) : (∃ x : α, (P x → Q)) → ((∀ x : α, P x) → Q) := sorry\n\ntheorem brackets_right_exi_impl (P : α → Prop) (Q : Prop) : ((∃ x : α, P x) → Q) ↔ (∀ x : α, (P x → Q)) := sorry\n\ntheorem inh_exi [Inhabited α] : ∃ _ : α, True := sorry\n\ntheorem inh_uni_exi_then_exi [Inhabited α] (P : α → Prop) : (∀ _ : α, ∃ x : α, P x) → (∃ x : α, P x) := sorry\n\ntheorem inh_uni_then_exi [Inhabited α] (P : α → Prop) : (∀ x : α, P x) → (∃ x : α, P x) := sorry\n\ntheorem inh_brackets_uni_conj [Inhabited α] (P : Prop) (Q : α → Prop) : (∀ x : α, P ∧ Q x) ↔ (P ∧ ∀ x : α, Q x) := sorry\n\ntheorem inh_brackets_exi_disj [Inhabited α] (P : Prop) (Q : α → Prop) : (∃ x : α, P ∨ Q x) ↔ (P ∨ ∃ x : α, Q x) := sorry\n\nopen Classical\n\ntheorem brackets_uni_disj (P : Prop) (Q : α → Prop) : (∀ x : α, P ∨ Q x) ↔ (P ∨ ∀ x : α, Q x) := sorry\n\ntheorem morgan_exi (P : α → Prop) : (∃ x : α, ¬ P x) ↔ (¬ ∀ x : α, P x) := sorry\n\ntheorem inh_brackets_left_exi_impl [Inhabited α] (P : Prop) (Q : α → Prop) : (P → ∃ x : α, Q x) ↔ (∃ x : α, (P → Q x)) := sorry\n\ntheorem inh_brackets_right_uni_impl [Inhabited α] (P: α → Prop)  (Q : Prop) :  ((∀ x : α, P x) → Q) ↔ (∃ x : α, (P x → Q)) := sorry\n\ntheorem drinker_paradox (is_drinking : pub_visitor → Prop) [Inhabited pub_visitor] : (∃ someone : pub_visitor, (is_drinking someone  → ∀ person : pub_visitor, is_drinking person)) := sorry"
+  },
+  "initial_language": "lean",
+  "requirements": [
+    "theorem uni : ∀ _ : α, True",
+    "theorem exi_uni_then_uni (P : α → Prop) : (∃ _ : α, ∀ x : α, P x) → (∀ x : α, P x)",
+    "theorem exi_exi_then_exi (P : α → Prop) : (∃ _ : α, ∃ x : α, P x) → (∃ x : α, P x)",
+    "theorem uni_uni_then_uni (P : α → Prop) : (∀ _ : α, ∀ x : α, P x) → (∀ x : α, P x)",
+    "theorem change_variable_uni (P: α → Prop) : (∀ x : α, P x) ↔ (∀ y : α, P y)",
+    "theorem change_variable_exi (P: α → Prop) : (∃ x : α, P x) ↔ (∃ y : α, P y)",
+    "theorem uni_congr (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∀ x : α, P x) ↔ (∀ x : α, Q x))",
+    "theorem exi_congr (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∃ x : α, P x) ↔ (∃ x: α, Q x))",
+    "theorem uni_comm (P : α →  β → Prop) : (∀ x : α, ∀ y : β, P x y) ↔ (∀ y : β, ∀ x : α, P x y)",
+    "theorem exi_comm (P : α → β → Prop) : (∃ x : α, ∃ y : β, P x y) ↔ (∃ y : β, ∃ x : α, P x y)",
+    "theorem exi_uni_then_uni_exi (P : α → β → Prop) : (∃ x : α, ∀ y : β, P x y) → (∀ y : β, ∃ x : α, P x y)",
+    "theorem uni_conj (P Q: α → Prop) : (∀ x: α, P x ∧ Q x) ↔ (∀ x : α, P x) ∧ (∀ x : α, Q x)",
+    "theorem exi_disj (P Q : α → Prop) : (∃ x : α, P x ∨ Q x) ↔ (∃ x : α, P x) ∨ (∃ x: α, Q x)",
+    "theorem morgan_uni (P : α → Prop) : (∀ x : α, ¬ P x) ↔ (¬ ∃ x : α, P x)",
+    "theorem morgan_exi_mp (P : α → Prop) : (∃ x : α, ¬ P x) →  (¬ ∀ x : α, P x)",
+    "theorem brackets_exi_conj (P : Prop) (Q : α → Prop) : (∃ x : α, P ∧ Q x) ↔ (P ∧ ∃ x : α, Q x)",
+    "theorem brackets_uni_conj_mpr (P : Prop) (Q : α → Prop) : (P ∧ ∀ x : α, Q x) → (∀ x : α, P ∧ Q x)",
+    "theorem brackets_exi_disj_mp (P : Prop) (Q : α → Prop) : (∃ x : α, P ∨ Q x) → (P ∨ ∃ x : α, Q x)",
+    "theorem brackets_uni_disj_mpr (P : Prop) (Q : α → Prop) : (P ∨ ∀ x : α, Q x) → (∀ x : α, P ∨ Q x)",
+    "theorem brackets_left_uni_impl (P : Prop) (Q : α → Prop) : (P → ∀ x : α, Q x) ↔ (∀ x : α, (P → Q x))",
+    "theorem brackets_left_exi_impl_mpr (P : Prop) (Q : α → Prop) : (∃ x : α, (P → Q x)) → (P → ∃ x : α, Q x)",
+    "theorem brackets_right_uni_impl_mpr (P : α → Prop) (Q : Prop) : (∃ x : α, (P x → Q)) → ((∀ x : α, P x) → Q)",
+    "theorem brackets_right_exi_impl (P : α → Prop) (Q : Prop) : ((∃ x : α, P x) → Q) ↔ (∀ x : α, (P x → Q))",
+    "theorem inh_exi [Inhabited α] : ∃ _ : α, True",
+    "theorem inh_uni_exi_then_exi [Inhabited α] (P : α → Prop) : (∀ _ : α, ∃ x : α, P x) → (∃ x : α, P x)",
+    "theorem inh_uni_then_exi [Inhabited α] (P : α → Prop) : (∀ x : α, P x) → (∃ x : α, P x)",
+    "theorem inh_brackets_uni_conj [Inhabited α] (P : Prop) (Q : α → Prop) : (∀ x : α, P ∧ Q x) ↔ (P ∧ ∀ x : α, Q x)",
+    "theorem inh_brackets_exi_disj [Inhabited α] (P : Prop) (Q : α → Prop) : (∃ x : α, P ∨ Q x) ↔ (P ∨ ∃ x : α, Q x)",
+    "theorem brackets_uni_disj (P : Prop) (Q : α → Prop) : (∀ x : α, P ∨ Q x) ↔ (P ∨ ∀ x : α, Q x)",
+    "theorem morgan_exi (P : α → Prop) : (∃ x : α, ¬ P x) ↔ (¬ ∀ x : α, P x)",
+    "theorem inh_brackets_left_exi_impl [Inhabited α] (P : Prop) (Q : α → Prop) : (P → ∃ x : α, Q x) ↔ (∃ x : α, (P → Q x))",
+    "theorem inh_brackets_right_uni_impl [Inhabited α] (P: α → Prop)  (Q : Prop) :  ((∀ x : α, P x) → Q) ↔ (∃ x : α, (P x → Q))",
+    "theorem drinker_paradox (is_drinking : pub_visitor → Prop) [Inhabited pub_visitor] : (∃ someone : pub_visitor, (is_drinking someone  → ∀ person : pub_visitor, is_drinking person))"
+  ]
+}

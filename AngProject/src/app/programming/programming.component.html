@@ -1,0 +1,32 @@
+<app-navigation_bar></app-navigation_bar>
+<div class="main-body">
+  <div class="title">
+    <table style="width: 100%">
+      <tr>
+        <th class="table-header">
+          <img
+            src="../../assets/images/programming_backwards.png"
+            class="image-button"
+            routerLink="/home"
+          />
+        </th>
+        <th class="table-header">Programming courses</th>
+        <th class="table-header"></th>
+      </tr>
+    </table>
+  </div>
+  <div class="container">
+    <button
+      *ngFor="let route of programmingRouteNames; let i = index"
+      class="item"
+      [routerLink]="route"
+    >
+      <img
+        class="picture"
+        [src]="'../../assets/images/' + programmingRouteNames[i] + '.png'"
+      />
+      {{ programmingTitles[i] }}
+    </button>
+    <div></div>
+  </div>
+</div>

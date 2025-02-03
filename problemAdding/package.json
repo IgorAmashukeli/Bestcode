@@ -1,0 +1,19 @@
+{
+  "name": "problemadding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "addProblem.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongodb": "^6.6.2",
+    "node-oracledb": "^1.0.2",
+    "oracledb": "^6.4.0"
+  }
+}

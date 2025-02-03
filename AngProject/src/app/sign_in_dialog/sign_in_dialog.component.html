@@ -1,0 +1,36 @@
+<body>
+  <button class="close-btn" (click)="closeDialog()">X</button>
+  <div class="title-container">
+    <ng-container>
+      <div *ngIf="!(authService.loggedIn$ | async)" class="title">Sign in</div>
+      <div *ngIf="authService.loggedIn$ | async" class="title2">Sign out</div>
+    </ng-container>
+  </div>
+  <div class="pop-window">
+    <ng-container>
+      <button
+        *ngIf="!(authService.loggedIn$ | async)"
+        class="card-wrapper"
+        href=""
+        (click)="signInWithGoogle()"
+      >
+        <div class="card">
+          <div class="card-body">
+            <img class="google-pic" src="../../assets/images/googleIcon.png" />
+            Sign in with Google
+          </div>
+        </div>
+      </button>
+      <button
+        *ngIf="authService.loggedIn$ | async"
+        class="card-wrapper"
+        href=""
+        (click)="signOut()"
+      >
+        <div class="card">
+          <div class="card-body2">Sign out</div>
+        </div>
+      </button>
+    </ng-container>
+  </div>
+</body>

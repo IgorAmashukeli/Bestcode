@@ -1,0 +1,60 @@
+<ng-container>
+  <div *ngIf="this.loading | async" class="description-component-body">
+    <div class="component-body">
+      <div class="description-problem-name">
+        {{ this.problem_name }}
+      </div>
+      <div
+        [ngClass]="{
+          'problems-easy': this.problem_difficulty === 'Easy',
+          'problems-medium': this.problem_difficulty === 'Medium',
+          'problems-hard': this.problem_difficulty === 'Hard'
+        }"
+      >
+        {{ this.problem_difficulty }}
+      </div>
+      <div [innerHTML]="this.description_text" class="description-body"></div>
+      <div class="examples-body">
+        <ng-container *ngFor="let value of this.examples; let i = index">
+          <div class="example-title">Example {{ i + 1 }}</div>
+          <div
+            class="example-body"
+            style="white-space: pre"
+            [innerHTML]="sanitizeHTML(value)"
+          ></div>
+        </ng-container>
+      </div>
+      <div class="constraints-body">
+        <ng-container>
+          <div *ngIf="this.constraints.length" class="constraints-title">
+            Constraints:
+            <ng-container
+              *ngFor="let constraint of this.constraints; let i = index"
+            >
+              <li class="constraint-body">
+                <span
+                  class="example-body"
+                  style="white-space: pre"
+                  [innerHTML]="constraint"
+                ></span>
+              </li>
+            </ng-container>
+          </div>
+        </ng-container>
+      </div>
+      <div style="font-size: 20px" class="note-body" [innerHTML]="note"></div>
+      <div class="statistics-body">
+        <div style="font-size: 20px">Accepted: {{ this.accepted }}</div>
+        <div style="font-size: 20px">|</div>
+        <div style="font-size: 20px">Submissions: {{ this.submitted }}</div>
+        <div style="font-size: 20px">|</div>
+        <div style="font-size: 20px">
+          Acceptance rate: {{ this.acceptance_rate }}%
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!(this.loading | async)" class="loader-container">
+    <div class="loader"></div>
+  </div>
+</ng-container>

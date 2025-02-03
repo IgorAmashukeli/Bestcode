@@ -1,0 +1,31 @@
+<app-navigation_bar></app-navigation_bar>
+<div class="main-body">
+  <div class="title">
+    <table style="width: 100%">
+      <tr>
+        <th class="table-header">
+          <img
+            src="../../assets/images/math_backwards.png"
+            class="image-button"
+            routerLink="/home"
+          />
+        </th>
+        <th class="table-header">Math courses</th>
+        <th class="table-header"></th>
+      </tr>
+    </table>
+  </div>
+  <div class="container">
+    <button
+      *ngFor="let route of mathRoutesNames; let i = index"
+      class="item"
+      [routerLink]="route"
+    >
+      <img
+        class="picture"
+        [src]="'../../assets/images/' + mathRoutesNames[i] + '.png'"
+      />
+      {{ mathTitles[i] }}
+    </button>
+  </div>
+</div>

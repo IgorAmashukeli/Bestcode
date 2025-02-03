@@ -1,0 +1,218 @@
+.main-body-problems {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: #201c1c;
+  background-size: cover;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border: 4px solid rgb(253, 151, 31);
+  border-left-color: rgb(102, 217, 239);
+  margin-top: 200px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+.image-button {
+  height: 50px;
+  cursor: pointer;
+}
+
+.table-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  width: 1200px;
+  height: auto;
+}
+
+thead {
+  height: 8px;
+  border-bottom: solid;
+  border-bottom-color: rgb(174, 129, 255);
+}
+
+.problem-title {
+  width: 100%;
+  height: 200px;
+}
+
+.problem-header {
+  width: 100%;
+  height: 100px;
+}
+
+.problems-header {
+  width: 25%;
+  font-size: 20px;
+  text-align: center;
+  color: white;
+}
+
+.problems-header3 {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: white;
+}
+
+.problems-name {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: white;
+  cursor: pointer;
+}
+
+.problems-name:hover {
+  color: rgb(255, 220, 100);
+}
+
+.problems-name2:hover {
+  color: rgb(170, 255, 255);
+}
+
+.problems-not-solved {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: red;
+}
+
+.problems-not-signed {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: white;
+}
+
+.problems-solved {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: green;
+}
+
+.problems-easy {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: green;
+}
+
+.problems-medium {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: rgb(253, 151, 31);
+}
+
+.problems-hard {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: red;
+}
+
+.problems-solution-coming {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: white;
+}
+
+.problem-body {
+  width: 100%;
+  height: 60px;
+  border-bottom: solid;
+  border-bottom-color: rgb(50, 45, 45);
+}
+
+.problems-body {
+  width: 25%;
+  font-size: 15px;
+  text-align: center;
+  color: white;
+}
+
+.youtube-button {
+  width: 30px;
+  border: none;
+  background: none;
+}
+
+i {
+  cursor: pointer;
+}
+
+.fa.fa-youtube-play:hover {
+  color: red !important;
+}
+
+tbody tr:nth-child(even) {
+  background-color: rgb(50, 45, 45);
+}
+
+@media (max-width: 1500px) {
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .image-button {
+    height: 4vh;
+    cursor: pointer;
+  }
+
+  table {
+    width: 100vw;
+    max-width: none;
+  }
+
+  thead {
+    height: 0.6vh;
+  }
+
+  .problem-title {
+    height: 15vh;
+  }
+
+  .problem-header {
+    height: 7vh;
+  }
+
+  .problem-body {
+    height: 10vh;
+  }
+
+  .problems-header,
+  .problems-header3,
+  .problems-name,
+  .problems-not-solved,
+  .problems-not-signed,
+  .problems-solved,
+  .problems-easy,
+  .problems-medium,
+  .problems-hard,
+  .problems-solution-coming,
+  .problems-body {
+    width: 25%;
+    font-size: 3vh;
+  }
+
+  .problems-solution-coming {
+    font-size: 2vw;
+    border: none;
+    background: none;
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "id": 1,
+  "course": "/math/set",
+  "title": "Set algebra",
+  "difficulty": "Easy",
+  "video_id": "y3svPgyGnLc",
+  "accepted": 0,
+  "submitted": 0,
+  "description_text": "This is task to prove, using <b>LEAN 4</b> language. <br> Proofs should be done, by writing constructive <b>proof terms with the help of constructors and destructors</b>. <br> In each math problem you will be given a list of permitted constructors, destructors and theorems <br> To proof each theorem, remove <b>\"sorry\"</b> and replace it with <b>proof term</b>. <br> You can use following constructors and destructors: <br>In this task you allowed to use all previously discussed theorems, constructors and destructorsIn this problem we will define union, intersection, difference and symmetric difference of 2 sets and prove set algebra theorems.",
+  "examples": [],
+  "constraints": [],
+  "note": " For reference, see this documentation: <a href=\"https://leanprover.github.io/theorem_proving_in_lean4/title_page.html\">LEAN 4 proving</a>",
+  "languages": [
+    [
+      "LEAN",
+      "lean"
+    ]
+  ],
+  "initial_codes": {
+    "lean": "-- previous problem definitions\n\ndef exists_unique (P : α → Prop) : Prop := (∃ (x : α), P x ∧ (∀ y : α, (P y → x = y)))\n\nopen Lean TSyntax.Compat in\n\nmacro \"∃!\" xs:explicitBinders \", \" b:term : term => expandExplicitBinders ``exists_unique xs b\n\naxiom Set : Type\n\naxiom membership : Set → Set → Prop\n\ninfix:50 (priority := high) \" ∈ \" => membership\n\ninfix:50 (priority := high) \" ∉ \" => (fun (x : Set) => (fun (y : Set) => ¬ membership x y))\n\naxiom prop_to_set (P : Set → Prop) (h : ∃! x, P x) : Set\n\naxiom set_to_prop (P : Set → Prop) (h : ∃! x, P x) : P (prop_to_set P h) ∧ ∀ x, x ≠ prop_to_set P h → ¬P x\n\ndef forall_in_A (P : Set → Prop) (A : Set) : Prop := (∀ x, (x ∈ A → P x))\n\ndef exists_in_A (P : Set → Prop) (A : Set) : Prop := (∃ x, (x ∈ A ∧ P x))\n\ndef exists_uniq_in_A (P : Set → Prop) (A : Set) : Prop := (∃! x, (x ∈ A ∧ P x))\n\ndeclare_syntax_cat idents\n\nsyntax ident : idents\n\nsyntax ident idents : idents\n\nsyntax \"∀\" idents \"∈\" term \";\" term : term\n\nsyntax \"∃\" idents \"∈\" term \";\" term : term\n\nsyntax \"∃!\" idents \"∈\" term \";\" term : term\n\nmacro_rules\n\n  | `(∀ $idnt:ident ∈ $A:term; $b:term)  => `(forall_in_A (fun $idnt:ident => $b) $A)\n\n  | `(∀ $idnt:ident $idnts:idents ∈ $A:term; $b:term) => `(forall_in_A (fun $idnt:ident => (∀ $idnts:idents ∈ $A; $b)) $A)\n\n  | `(∃ $idnt:ident ∈ $A:term; $b:term)  => `(exists_in_A (fun $idnt:ident => $b) $A)\n\n  | `(∃ $idnt:ident $idnts:idents ∈ $A:term; $b:term) => `(exists_in_A (fun $idnt:ident => (∀ $idnts:idents ∈ $A; $b)) $A)\n\n  | `(∃! $idnt:ident ∈ $A:term; $b:term)  => `(exists_uniq_in_A (fun $idnt:ident => $b) $A)\n\n  | `(∃! $idnt:ident $idnts:idents ∈ $A:term; $b:term) => `(exists_uniq_in_A (fun $idnt:ident => (∀ $idnts:idents ∈ $A; $b)) $A)\n\ndef empty (A : Set) : Prop := ∀ b, (b ∉ A)\n\ndef non_empty (A : Set) : Prop := ∃ b, (b ∈ A)\n\ndef subset (A B : Set) : Prop := ∀ x ∈ A; x ∈ B\n\ndef is_successor (m n : Set) : Prop := ∀ x, (x ∈ n ↔ x ∈ m ∨ x = m)\n\ninfix:50 (priority := high) \" ⊆ \" => subset\n\naxiom exists_unique_empty : (∃! x, empty x)\n\naxiom unique_unordered_pair : (∀ a₁ a₂, ∃! C, ∀ x, (x ∈ C ↔ x = a₁ ∨ x = a₂))\n\naxiom unique_union : ∀ A, ∃! B, ∀ x, (x ∈ B ↔ ∃ y ∈ A; x ∈ y)\n\naxiom unique_specification (P : Set → Prop) : (∀ A, ∃! B, ∀ x, (x ∈ B ↔ x ∈ A ∧ P x))\n\nnoncomputable def empty_set := prop_to_set empty exists_unique_empty\n\nnoncomputable def unordered_pair_set : (Set → Set → Set) := fun (a₁ : Set) => fun (a₂ : Set) =>\n\n  prop_to_set (fun (B) => ∀ x, (x ∈ B ↔ x = a₁ ∨ x = a₂)) (unique_unordered_pair a₁ a₂)\n\nnoncomputable def singleton_set : (Set → Set) := fun (a) => unordered_pair_set a a\n\nnoncomputable def union_set : (Set → Set) := fun (A) => prop_to_set (fun (B) => ∀ x, (x ∈ B ↔ ∃ y ∈ A; x ∈ y)) (unique_union A)\n\nnoncomputable def specification_set (P : Set → Prop) : (Set → Set) :=\n\n  fun (A) => prop_to_set (fun (B) => (∀ x, x ∈ B ↔ x ∈ A ∧ P x)) (unique_specification P A)\n\nnotation (priority := high) \"∅\" => empty_set\n\nnotation (priority := high) \"{\" a₁ \", \" a₂ \"}\" => unordered_pair_set a₁ a₂\n\nnotation (priority := high) \"{\" a \"}\" => singleton_set a\n\nnotation (priority := high) \"⋃\" => union_set\n\nsyntax \"{\" ident \"∈\" term \"|\" term \"}\" : term\n\nmacro_rules\n\n  | `({ $x:ident ∈ $A:term | $property:term })  => `(specification_set (fun ($x) => $property) $A)\n\n-- defition of A ∪ B\n\nnoncomputable def union_2sets (A B : Set) := ⋃ {A, B}\n\ninfix:60 (priority:=high) \" ∪ \" => union_2sets\n\n-- defition of A ∩ B\n\nnoncomputable def intersect_2sets (A B : Set) := {x ∈ A | x ∈ B}\n\ninfix:60 (priority:=high) \" ∩ \" => intersect_2sets\n\n-- defition of A \\ B\n\nnoncomputable def difference (A B : Set) := {x ∈ A | x ∉ B}\n\ninfix:60 (priority:=high) \" \\\\ \" => difference\n\n-- defition of A △ B\n\nnoncomputable def symmetric_difference (A B : Set) := (A \\ B) ∪ (B \\ A)\n\ninfix:60 (priority:=high) \" △ \" => symmetric_difference\n\n-- macros of set comprehension\n\n-- {a, b, c}, {a, b, c, d}, {a, b, c, d, e}, ...\n\ndeclare_syntax_cat set_comprehension\n\nsyntax term \"; \" set_comprehension : set_comprehension\n\nsyntax term : set_comprehension\n\nsyntax \"{\" set_comprehension \"}\" : term\n\nmacro_rules\n\n| `({$term1:term; $term2:term}) => `(unordered_pair_set $term1:term $term2:term)\n\n| `({$elem:term; $rest:set_comprehension}) => `({$rest:set_comprehension} ∪ {$elem:term})\n\n-- A ∪ B main property\n\ntheorem union2_sets_prop : (∀ A B x, x ∈ A ∪ B ↔ x ∈ A ∨ x ∈ B) := sorry\n\n-- A ∩ B main property\n\ntheorem intersect_2sets_prop : (∀ A B x, x ∈ A ∩ B ↔ x ∈ A ∧ x ∈ B) := sorry\n\n-- A \\ B main property\n\ntheorem difference_prop : (∀ A B x, x ∈ A \\ B ↔ x ∈ A ∧ x ∉ B) := sorry\n\n-- A △ B main property\n\ntheorem symmetric_difference_prop : (∀ A B x, x ∈ A △ B ↔ (x ∈ A ∧ x ∉ B) ∨ (x ∈ B ∧ x ∉ A)) := sorry\n\n-- A ∪ B subsets\n\ntheorem union2sets_subset_prop : (∀ A B, (A ⊆ A ∪ B) ∧ (B ⊆ A ∪ B)) := sorry\n\n-- A ∩ B as a subset\n\ntheorem interset2sets_subset_prop : (∀ A B, (A ∩ B ⊆ A) ∧ (A ∩ B ⊆ B)) := sorry\n\n-- A \\ B as a subset\n\ntheorem difference_subset_prop : (∀ A B, A \\ B ⊆ A) := sorry\n\n-- three equivalent statements about subsets\n\ntheorem subset_using_equality : ∀ A B, (A ⊆ B ↔ A ∩ B = A) ∧ (A ⊆ B ↔ A ∪ B = B) ∧ (A ∩ B = A ↔ A ∪ B = B) := sorry\n\n-- idempodent properties\n\ntheorem intersec2_idemp : (∀ A, A ∩ A = A) := sorry\n\ntheorem union2_idepm : (∀ A, A ∪ A = A) := sorry\n\n-- commutativity properties\n\ntheorem intersec2_comm : (∀ A B, A ∩ B = B ∩ A) := sorry\n\ntheorem union2_comm : (∀ A B, A ∪ B = B ∪ A) := sorry\n\n-- associativity properties\n\ntheorem inter2_assoc : (∀ A B C, (A ∩ B) ∩ C = A ∩ (B ∩ C)) := sorry\n\ntheorem union2_assoc : (∀ A B C, (A ∪ B) ∪ C = A ∪ (B ∪ C)) := sorry\n\n-- absorbtion properties\n\ntheorem inter_union_absorbtion : (∀ A B, A ∩ (A ∪ B) = A) := sorry\n\ntheorem union_inter_absorbtion : (∀ A B, A ∪ (A ∩ B) = A) := sorry\n\n-- distributivity properties\n\ntheorem inter_union_distribution : (∀ A B C, A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C)) := sorry\n\ntheorem union_inter_distribution : (∀ A B C, A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C)) := sorry\n\n-- double complement property\n\ntheorem double_compl (U : Set) (A : Set)  (h : A ⊆ U) : (U \\ (U \\ A)) = A := sorry\n\n-- demorgan laws\n\ntheorem demorgan_inter : ∀ U A B, (U \\ (A ∩ B) = (U \\ A) ∪ (U \\ B)) := sorry\n\ntheorem demorgan_union: ∀ U A B, (U \\ (A ∪ B) = (U \\ A) ∩ (U \\ B)) := sorry\n\n-- intersection of complement sets\n\ntheorem inter_to_empty: ∀ U A, (A ∩ (U \\ A) = ∅) := sorry\n\n-- set difference equivalent form\n\ntheorem difference_inter_prop (U A B : Set) (h : A ⊆ U) : (A \\ B = A ∩ (U \\ B)) := sorry\n\n-- union of complement sets\n\ntheorem union_to_universum (U A : Set) (h : A ⊆ U) : (A ∪ (U \\ A) = U) := sorry\n\n-- empty set and operations\n\ntheorem intersec2_empty : (∀ A, A ∩ ∅ = ∅) := sorry\n\ntheorem union2_empty : (∀ A, A ∪ ∅ = A) := sorry\n\n-- universum and operations\n\ntheorem inter2_universum (U A : Set) (h : A ⊆ U) : A ∩ U = A := sorry\n\ntheorem union2_universum (U A : Set) (h : A ⊆ U) : A ∪ U = U := sorry\n\n-- now, using set algebra properties and eq_subst, it is easy to prove the equality\n\n-- such sets without \"low-level\" manipulation with elements\n\n-- use eq_subst and previous properties to prove 2 examples below\n\n-- without manipulation with elements of the sets\n\ntheorem example_theorem1  : (∀ A B C, A \\ (B \\ C) = (A \\ B) ∪ (A ∩ C)) := sorry\n\ntheorem example_theorem2 : (∀ A B, A △ B = (A ∪ B) \\ (A ∩ B)) := sorry"
+  },
+  "initial_language": "lean",
+  "requirements": [
+    "theorem union2_sets_prop : (∀ A B x, x ∈ A ∪ B ↔ x ∈ A ∨ x ∈ B)",
+    "theorem intersect_2sets_prop : (∀ A B x, x ∈ A ∩ B ↔ x ∈ A ∧ x ∈ B)",
+    "theorem difference_prop : (∀ A B x, x ∈ A \\ B ↔ x ∈ A ∧ x ∉ B)",
+    "theorem symmetric_difference_prop : (∀ A B x, x ∈ A △ B ↔ (x ∈ A ∧ x ∉ B) ∨ (x ∈ B ∧ x ∉ A))",
+    "theorem union2sets_subset_prop : (∀ A B, (A ⊆ A ∪ B) ∧ (B ⊆ A ∪ B))",
+    "theorem interset2sets_subset_prop : (∀ A B, (A ∩ B ⊆ A) ∧ (A ∩ B ⊆ B))",
+    "theorem difference_subset_prop : (∀ A B, A \\ B ⊆ A)",
+    "theorem subset_using_equality : ∀ A B, (A ⊆ B ↔ A ∩ B = A) ∧ (A ⊆ B ↔ A ∪ B = B) ∧ (A ∩ B = A ↔ A ∪ B = B)",
+    "theorem intersec2_idemp : (∀ A, A ∩ A = A)",
+    "theorem union2_idepm : (∀ A, A ∪ A = A)",
+    "theorem intersec2_comm : (∀ A B, A ∩ B = B ∩ A)",
+    "theorem union2_comm : (∀ A B, A ∪ B = B ∪ A)",
+    "theorem inter2_assoc : (∀ A B C, (A ∩ B) ∩ C = A ∩ (B ∩ C))",
+    "theorem union2_assoc : (∀ A B C, (A ∪ B) ∪ C = A ∪ (B ∪ C))",
+    "theorem inter_union_absorbtion : (∀ A B, A ∩ (A ∪ B) = A)",
+    "theorem union_inter_absorbtion : (∀ A B, A ∪ (A ∩ B) = A)",
+    "theorem inter_union_distribution : (∀ A B C, A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C))",
+    "theorem union_inter_distribution : (∀ A B C, A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C))",
+    "theorem double_compl (U : Set) (A : Set)  (h : A ⊆ U) : (U \\ (U \\ A)) = A",
+    "theorem demorgan_inter : ∀ U A B, (U \\ (A ∩ B) = (U \\ A) ∪ (U \\ B))",
+    "theorem demorgan_union: ∀ U A B, (U \\ (A ∪ B) = (U \\ A) ∩ (U \\ B))",
+    "theorem inter_to_empty: ∀ U A, (A ∩ (U \\ A) = ∅)",
+    "theorem difference_inter_prop (U A B : Set) (h : A ⊆ U) : (A \\ B = A ∩ (U \\ B))",
+    "theorem union_to_universum (U A : Set) (h : A ⊆ U) : (A ∪ (U \\ A) = U)",
+    "theorem intersec2_empty : (∀ A, A ∩ ∅ = ∅)",
+    "theorem union2_empty : (∀ A, A ∪ ∅ = A)",
+    "theorem inter2_universum (U A : Set) (h : A ⊆ U) : A ∩ U = A",
+    "theorem union2_universum (U A : Set) (h : A ⊆ U) : A ∪ U = U",
+    "theorem example_theorem1  : (∀ A B C, A \\ (B \\ C) = (A \\ B) ∪ (A ∩ C))",
+    "theorem example_theorem2 : (∀ A B, A △ B = (A ∪ B) \\ (A ∩ B))"
+  ]
+}

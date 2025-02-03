@@ -1,0 +1,34 @@
+{
+  "id": 0,
+  "course": "/programming/dsa",
+  "title": "Sample template problem",
+  "difficulty": "Easy",
+  "video_id": "y3svPgyGnLc",
+  "accepted": 0,
+  "submitted": 0,
+  "description_text": "Given two integers: <b><b>n</b></b> and <b>k</b>, return <b>n + k</b>",
+  "examples": [
+    "\t<b><b>Input</b></b>: n = 1, k = 2<br>\t<b><b>Output</b></b>: 3<br>\t<b><b>Explanation</b></b>: n + k = 1 + 2 = 3",
+    "\t<b><b>Input</b></b>: n = 2, k = 2<br>\t<b><b>Output</b></b>: 4<br>",
+    "\t<b><b>Input</b></b>: n = 3, k = 3<br>\t<b><b>Output</b></b>: 6<br>"
+  ],
+  "constraints": [
+    "1 <= n <= 100",
+    "1 <= k <= 100"
+  ],
+  "note": "<b><b>Follow up</b></b>: Can you do it in <b>O(1)</b>?",
+  "languages": [
+    [
+      "C++",
+      "cpp"
+    ]
+  ],
+  "initial_codes": {
+    "cpp": "#include <iostream>\n\nint summa(int n, int k) {\n    // your code here\n}"
+  },
+  "initial_language": "cpp",
+  "run_headers": "#include <future>\n#include <chrono>\n",
+  "run_code": "std::chrono::milliseconds max_time(0);\n\n\nint helper(int a, int b) {\n    auto start_time = std::chrono::high_resolution_clock::now();\n    \n    int res = summa(a, b);\n    auto end_time = std::chrono::high_resolution_clock::now();\n    auto cur_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);\n    if (cur_time > max_time) {\n        max_time = cur_time;\n    }\n    return res;\n}\n\n\n\nint main() {\n  int test_case_num = 0;\n  int test_case_count = 3;\n  int time_limit_seconds = 1;\n  int arr[3][2];\n  arr[0][0] = 1;\n  arr[0][1] = 2;\n  arr[1][0] = 2;\n  arr[1][1] = 2;\n  arr[2][0] = 3;\n  arr[2][1] = 3;\n\n  for (int k = 0; k < test_case_count; ++k) {\n    int i = arr[k][0];\n    int j = arr[k][1];\n    int correct_result = i + j;\n    int result;\n\n    std::future<int> future_result = std::async(std::launch::async, helper, i, j);\n    auto status = future_result.wait_for(std::chrono::seconds(time_limit_seconds));\n\n    if (status == std::future_status::timeout) {\n        std::cout << \"TL!\\n\";\n        exit(0);\n    }\n\n    result = future_result.get();\n\n    result = summa(i, j);\n\n    if (result != correct_result) {\n      std::cout << \"WA!\\n\";\n      std::cout << test_case_num << \"\\n\";\n      std::cout << \"input: \" << i << \" \" << j << \"\\n\";\n      std::cout << \"correct output: \" << correct_result << \"\\n\";\n      std::cout << \"your output: \" << result << \"\\n\";\n      return 0;\n    }\n    test_case_num++;\n  }\n\n  std::cout << \"OK\\n\";\n  std::cout << max_time << \"\\n\";\n\n  return 0;\n}",
+  "submit_headers": "#include <future>\n#include <chrono>\n",
+  "submit_code": "std::chrono::milliseconds max_time(0);\n\n\nint helper(int a, int b) {\n    auto start_time = std::chrono::high_resolution_clock::now();\n    \n    int res = summa(a, b);\n    auto end_time = std::chrono::high_resolution_clock::now();\n    auto cur_time = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);\n    if (cur_time > max_time) {\n        max_time = cur_time;\n    }\n    return res;\n}\n\nint main() {\n    int test_case_num = 0;\n    int time_limit_seconds = 1; \n\n    for (int i = 0; i < 10; ++i) {\n        for (int j = 0; j < 10; ++j) {\n            int correct_result = i + j;\n            int result;\n\n            std::future<int> future_result = std::async(std::launch::async, helper, i, j);\n            auto status = future_result.wait_for(std::chrono::seconds(time_limit_seconds));\n\n            if (status == std::future_status::timeout) {\n                std::cout << \"TL!\\n\";\n                exit(0);\n            }\n\n            result = future_result.get();\n\n\n            if (result != correct_result) {\n                std::cout << \"WA!\\n\";\n                std::cout << test_case_num << \"\\n\";\n                std::cout << \"input: \" << \"n = \" << i << \", k = \" << j << \"\\n\";\n                std::cout << \"correct output: \" << correct_result << \"\\n\";\n                std::cout << \"your output: \" << result << \"\\n\";\n                return 0;\n            }\n\n            test_case_num++;\n        }\n    }\n    std::cout << \"OK\\n\";\n    std::cout << max_time << \"\\n\";\n    return 0;\n}"
+}

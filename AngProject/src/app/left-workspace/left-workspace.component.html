@@ -1,0 +1,26 @@
+<div class="left-worspace-body">
+  <div class="left-workspace-wrapper">
+    <div class="left-workspace-body">
+      <ng-container>
+        <div *ngIf="selectedNavItem === 'description_page'">
+          <description></description>
+        </div>
+        <div
+          *ngIf="
+            selectedNavItem === 'submissions_page' && this.loading_submission
+          "
+        >
+          <submissions></submissions>
+        </div>
+        <div
+          *ngIf="
+            selectedNavItem === 'submissions_page' && !this.loading_submission
+          "
+          class="loader-container"
+        >
+          <div class="loader"></div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

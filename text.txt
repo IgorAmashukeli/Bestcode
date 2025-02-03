@@ -1,0 +1,72 @@
+Hello, today I want to discuss the project that was created as a part of the final dissertation.
+
+The project can be characterized as an xMOOC system. It stands for the Extended Massive Open Online Course system.
+
+The system is done in the form of an online judge system. It is a system that allows users to submit solutions to problems and automatically evaluates their correctness.
+
+Online judges can be divided into different categories with respect of their purposes:
+
+- Online judges for the competitive programming
+- Online judges for the data mining
+- Online judges for the recruitment
+- Development systems for online judges
+and
+- Online judges for educational purposes
+
+The system, I am going to present can be named as a system for educational purposes. It consists of two types of courses: math and programming courses.
+
+The idea is that they are created in the form of sequential courses. They adhere to the idea that all knowledge should be obtained as a result of studying consecutive courses and tasks. Each new problem should require no more knowledge than the information gained in previous problems. This allows you to study each new concept sequentially, step by step from the initial principles. 
+
+It is rather a unique idea because most of the educational online judge systems are related to studying some narrow area of knowledge. Some of the systems are trying to maximize the quantity of the tasks. Sometimes there are math and programming concepts that are very essential, but they are not included. 
+
+
+The online judge system was implemented in the form of a web platform.
+
+Now let's look at the diagrams, and how it works, and then we will run the project.
+
+So, as we can see, it has a client and server side, and it uses an authentication service. It uses a database and software that tests and evaluates the submitted solutions.
+
+Here we can see the current diagram of the service.
+But this will be shown when the project is run
+
+And finally, let's look at the model of the data, the application is using. It uses three collections: Users, Problems, and the keys of the problems. The last collection was created to simplify the creation of user data, related to their problems.
+
+Now, let's move to the project.
+
+Now, as we can see it runs the application.
+Here, on the right is a simple sign-in/sign out button.
+There are two course pages. Math and programming.
+
+Let's first look at math courses. Because the courses are sequential, the tasks are also sequentially, and right now, we can find 3 problems in the first course and 3 problems in the second course. They are real problems that require users to submit formal proofs of the theorems about the initial math constructions. For example, let's open any problem. In these problems, we can see a description on the left, a code editor on the right, and the initial code that should be edited and submitted. 
+For example, we can submit it as it is now. As we can see, it says that there is a missing proof. It happens because there are some theorems that are not proved.
+
+Now, to speed up the demo, let's copy some of the submitted code.
+
+For that, let's switch to the submission page. On the submission page, we can see all the submitted problems. We can see the time when the problem was sent, the status, the log of the problem, and the code that was submitted. Let's open the correct code. Now, after sending the code, we can see, how it works. It says, ok, all the theorems are proved correctly. Now, let's intentionally make the proof not correct. Now, as we can see, the output says that the submission was incorrect. 
+
+The theorems are submitted in LEAN language. It allows the code that doesn't halt. Let's do that to see what is going to happen.
+
+def spam : IO Unit := do
+  repeat IO.println "Spam!"
+
+
+#eval spam
+
+Right now, we can see, it is showing that the result of the code is that the time limit was exceeded.
+
+When looking at programming problems, right now, we can see a working template problem. Currently, users can use C++ language. We can submit the code and see different results:
+OK, WA, TL, RE, CE.
+If you want, we can test.
+
+In the future, the first idea is to add more interesting problems to the programming course. For example, there are plenty of books and open resources that teach students to write educational analogs of some computer architecture systems, operating systems, and compiler concepts. These tasks may be changed and adopted for the project.
+
+
+In the future, there are different ideas to change the testing software. Right now, it uses the preinstalled docker images and their containers to run the submitted code. There are various such systems. For example, Judge-0, Joodle, Sphere Engine, and Piston. Moreover, the database and the technologies can be further changed, if some of them will suit the needs better. For example, at the start, Oracle cloud platforms were chosen, as there were some free virtual machine instances that could be used in the future. But at some stage, the Oracle Cloud "always free" account was banned for some unknown reason and there was a necessity to move to Microsoft Azure cloud services. 
+
+During the development, I learned to use Angular, Monaco Editor, Express JS, Node JS, Docker, Oracle Autonomous DB, Oracle SODA API, Azure Cosmos DB and Mongo DB API, Azure uses. There was also a trial to use Judge 0. However, it was unsuccessful due to compatibility issues. It requires cgroup-v1 for proper work, but the machine and the OS I am using have cgroup-v2. 
+
+The efficiency and the situations that happen, when the data or load increases, were beyond the scope of this project.
+
+
+
+

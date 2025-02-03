@@ -1,0 +1,56 @@
+{
+  "id": 2,
+  "course": "/math/logic",
+  "title": "Equality validities",
+  "difficulty": "Easy",
+  "video_id": "y3svPgyGnLc",
+  "accepted": 0,
+  "submitted": 0,
+  "description_text": "This is task to prove, using <b>LEAN 4</b> language. <br> Proofs should be done, by writing constructive <b>proof terms with the help of constructors and destructors</b>. <br> In each math problem you will be given a list of permitted constructors, destructors and theorems <br> To proof each theorem, remove <b>\"sorry\"</b> and replace it with <b>proof term</b>. <br> You can use following constructors and destructors: <br><br>All the constructors and destructors from previous problem<br><br>You can assume all theorems from previous problem as axioms<br><br><i>Constructor and destructor for the equality relation: </i><br><i> Constructor refl: </i> <b> Eq.refl : ∀ (a : α), (a = a) </b> from a variable of <b>α</b> type <br><i> Constructor for Prop equality: </i> <b> Eq.propIntro : ∀ (a b : Prop), (a → b) → (b → a) → (a = b) </b> from <b>a b</b> variables of type <b>Prop</b> <br><i> Destructor substitution: </i> <b> Eq.subst : ∀ (P : α → Prop), (a b : α), (a = b) → P a → P b </b> from <b>P</b> variable of type <b>α → Prop</b> and <b>a</b> <b>b</b> variables of type <b>α</b> <br><i> Destructor for equal types: </i> <b> Eq.mp : ∀ (α β : Type), (α = β) → α → β </b> from <b>α β</b> of type <b>Type</b> <br>",
+  "examples": [],
+  "constraints": [],
+  "note": "Note that you can only use <b>Classical (em and ByContradiction)</b> for the theorems, defined after <i>open Classical</i>.  <br> <br> For reference, see this documentation: <a href=\"https://leanprover.github.io/theorem_proving_in_lean4/title_page.html\">LEAN 4 proving</a>",
+  "languages": [
+    [
+      "LEAN",
+      "lean"
+    ]
+  ],
+  "initial_codes": {
+    "lean": "--your proof goes here\n\ntheorem eq_refl : (∀ x : α, x = x) := sorry\n\ntheorem eq_subst (P : α → Prop) : (∀ (a b : α), a = b → P a → P b) := sorry\n\ntheorem eq_symm : (∀ (x y : α), x = y → y = x) := sorry\n\ntheorem eq_substr (P : α → Prop) : (∀ (a b : α), a = b → P b → P a) := sorry\n\ndef eq_mp (α : Sort u₁) (β : Sort u₁) (h : α = β) (a : α) : β := sorry\n\ndef eq_mpr (α : Sort u₁) (β : Sort u₁) (h : α = β) (b : β) : α := sorry\n\ntheorem eq_trans_curry : (∀ (x y z : α), x = y → y = z → x = z) := sorry\n\ntheorem eq_trans_export : (∀ (x y z : α), x = y ∧ y = z → x = z) := sorry\n\ntheorem eq_congr_func_arg (f : α → β) : (∀ (x y : α), x = y → f x = f y) := sorry\n\ntheorem iff_is_eq (p q : Prop) : (p ↔ q) ↔ (p = q) := sorry\n\ntheorem eq_congr_pred_arg (P : α → Prop) : (∀ (x y : α), x = y → (P x ↔ P y)) := sorry\n\ntheorem eq_congr_func_symb (f g : α → β) (h : f = g) : (∀ x : α, f x = g x) := sorry\n\ntheorem eq_congr_pred_symb (P Q : α → Prop) (h : P = Q) : (∀ x : α, P x ↔ Q x) := sorry\n\ntheorem eq_commut : (∀ x : α, ∀ y : α, x = y ↔ y = x) := sorry\n\ntheorem eq_prop_intro (p q : Prop) : (p → q) → (q → p) → (p = q) := sorry\n\ntheorem eq_congr_func_arg_symb (f₁ f₂ : α → β) : ∀ (a₁ a₂ : α), (f₁ = f₂) → (a₁ = a₂) → (f₁ a₁ = f₂ a₂) := sorry\n\ntheorem eq_congr_pred_arg_symb (P₁ P₂ : α → Prop) : ∀ (a₁ a₂ : α), (P₁ = P₂) → (a₁ = a₂) → (P₁ a₁ ↔ P₂ a₂) := sorry\n\n-- ≠ is a symbol, x ≠ y is parsed as ¬ (x = y)\n\n-- prove trivial theorem for that\n\ntheorem neq_symbol : (∀ (x y : α), ¬ (x = y) ↔ x ≠ y) := sorry\n\ntheorem exists_eq_C_PC_then_P (P : α → Prop) : (∃ x : α, x = C) → (P C) → (∃ x : α, P x) := sorry\n\ntheorem forall_eq_C_PC_then_P (P : α → Prop) : (∀ x : α, x = C) → (P C) → (∀ x : α, P x) := sorry\n\n-- we define exists unique quantifier\n\ndef exists_unique (P : α → Prop) : Prop := (∃ (x : α), P x ∧ (∀ y : α, (P y → x = y)))\n\nopen Lean TSyntax.Compat in\n\nmacro \"∃!\" xs:explicitBinders \", \" b:term : term => expandExplicitBinders ``exists_unique xs b\n\n@[app_unexpander exists_unique] def unexpandexists_unique: Lean.PrettyPrinter.Unexpander\n\n| ($(_) fun $x:ident ↦ ∃! $xs:binderIdent*, $b) => (∃! $x:ident $xs:binderIdent*, $b)\n\n| ($(_) fun $x:ident ↦ $b)                      => (∃! $x:ident, $b)\n\n| ($(_) fun ($x:ident : $t) ↦ $b)               => (∃! ($x:ident : $t), $b)\n\n| _                                               => throw ()\n\ntheorem exists_unique_intro (P : α → Prop) (w : α) (h : P w) (g : ∀ y : α, P y → w = y) : ∃! (x : α), P x := sorry\n\ntheorem exists_unique_elim (q : Prop) (P : α → Prop) (h : ∃! (x : α), P x) (g : ∀ w : α, ∀ _ : P w, ((∀ y : α, P y → w = y) → q)) : q := sorry\n\ntheorem exists_unique_expansion_export (P : α → Prop) : (∃! (x : α), P x) ↔ (∃ (x : α), P x) ∧ (∀ (x y : α), (P x ∧ P y → x = y)) := sorry\n\ntheorem exists_unique_expansion_curry (P : α → Prop) : (∃! (x : α), P x) ↔ (∃ (x : α), P x) ∧ (∀ (x y : α), (P x → P y → x = y)) := sorry\n\ntheorem exists_unique_then_exists (P : α → Prop) (h : ∃! (x : α), P x) : (∃ (x : α), P x) := sorry\n\ntheorem exists_unique_then_unique (P : α → Prop)  (h : ∃! (x : α), P x) (x : α) (y : α) (h₁ : P x) (h₂ : P y) : x = y := sorry\n\ntheorem exists_unique_congr (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∃! (x : α), P x) ↔ (∃! (x : α), Q x)) := sorry\n\nopen Classical\n\ntheorem uni_eq_partition (P : α → α → Prop) : (∀ x : α, ∀ y : α, P x y) ↔ ((∀ x : α, P x x) ∧ ∀ x : α, ∀ y : α, (x ≠ y → P x y)) := sorry\n\ntheorem exi_eq_partition (P : α → α → Prop) : (∃ x : α, ∃ y : α, P x y) ↔ ((∃ x : α, P x x) ∨ ∃ x : α, ∃ y : α, (x ≠ y ∧ P x y)) := sorry"
+  },
+  "initial_language": "lean",
+  "requirements": [
+    "theorem eq_refl : (∀ x : α, x = x) :=",
+    "theorem eq_subst (P : α → Prop) : (∀ (a b : α), a = b → P a → P b) :=",
+    "theorem eq_symm : (∀ (x y : α), x = y → y = x) :=",
+    "theorem eq_substr (P : α → Prop) : (∀ (a b : α), a = b → P b → P a) :=",
+    "def eq_mp (α : Sort u₁) (β : Sort u₁) (h : α = β) (a : α) : β :=",
+    "def eq_mpr (α : Sort u₁) (β : Sort u₁) (h : α = β) (b : β) : α :=",
+    "theorem eq_trans_curry : (∀ (x y z : α), x = y → y = z → x = z) :=",
+    "theorem eq_trans_export : (∀ (x y z : α), x = y ∧ y = z → x = z) :=",
+    "theorem eq_congr_func_arg (f : α → β) : (∀ (x y : α), x = y → f x = f y) :=",
+    "theorem iff_is_eq (p q : Prop) : (p ↔ q) ↔ (p = q) :=",
+    "theorem eq_congr_pred_arg (P : α → Prop) : (∀ (x y : α), x = y → (P x ↔ P y)) :=",
+    "theorem eq_congr_func_symb (f g : α → β) (h : f = g) : (∀ x : α, f x = g x) :=",
+    "theorem eq_congr_pred_symb (P Q : α → Prop) (h : P = Q) : (∀ x : α, P x ↔ Q x) :=",
+    "theorem eq_commut : (∀ x : α, ∀ y : α, x = y ↔ y = x) :=",
+    "theorem eq_prop_intro (p q : Prop) : (p → q) → (q → p) → (p = q) :=",
+    "theorem eq_congr_func_arg_symb (f₁ f₂ : α → β) : ∀ (a₁ a₂ : α), (f₁ = f₂) → (a₁ = a₂) → (f₁ a₁ = f₂ a₂) :=",
+    "theorem eq_congr_pred_arg_symb (P₁ P₂ : α → Prop) : ∀ (a₁ a₂ : α), (P₁ = P₂) → (a₁ = a₂) → (P₁ a₁ ↔ P₂ a₂) :=",
+    "theorem neq_symbol : (∀ (x y : α), ¬ (x = y) ↔ x ≠ y) :=",
+    "theorem exists_eq_C_PC_then_P (P : α → Prop) : (∃ x : α, x = C) → (P C) → (∃ x : α, P x) :=",
+    "theorem forall_eq_C_PC_then_P (P : α → Prop) : (∀ x : α, x = C) → (P C) → (∀ x : α, P x) :=",
+    "theorem uni_eq_partition (P : α → α → Prop) : (∀ x : α, ∀ y : α, P x y) ↔ ((∀ x : α, P x x) ∧ ∀ x : α, ∀ y : α, (x ≠ y → P x y)) :=",
+    "theorem exi_eq_partition (P : α → α → Prop) : (∃ x : α, ∃ y : α, P x y) ↔ ((∃ x : α, P x x) ∨ ∃ x : α, ∃ y : α, (x ≠ y ∧ P x y)) :=",
+    "theorem exists_unique_intro (P : α → Prop) (w : α) (h : P w) (g : ∀ y : α, P y → w = y) : ∃! (x : α), P x :=",
+    "theorem exists_unique_elim (q : Prop) (P : α → Prop) (h : ∃! (x : α), P x) (g : ∀ w : α, ∀ _ : P w, ((∀ y : α, P y → w = y) → q)) : q :=",
+    "theorem exists_unique_expansion_export (P : α → Prop) : (∃! (x : α), P x) ↔ (∃ (x : α), P x) ∧ (∀ (x y : α), (P x ∧ P y → x = y)) :=",
+    "theorem exists_unique_expansion_curry (P : α → Prop) : (∃! (x : α), P x) ↔ (∃ (x : α), P x) ∧ (∀ (x y : α), (P x → P y → x = y)) :=",
+    "theorem exists_unique_then_exists (P : α → Prop) (h : ∃! (x : α), P x) : (∃ (x : α), P x) :=",
+    "theorem exists_unique_then_unique (P : α → Prop)  (h : ∃! (x : α), P x) (x : α) (y : α) (h₁ : P x) (h₂ : P y) : x = y :=",
+    "theorem exists_unique_congr (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∃! (x : α), P x) ↔ (∃! (x : α), Q x)) :=",
+    "theorem uni_eq_partition (P : α → α → Prop) : (∀ x : α, ∀ y : α, P x y) ↔ ((∀ x : α, P x x) ∧ ∀ x : α, ∀ y : α, (x ≠ y → P x y)) :=",
+    "theorem exi_eq_partition (P : α → α → Prop) : (∃ x : α, ∃ y : α, P x y) ↔ ((∃ x : α, P x x) ∨ ∃ x : α, ∃ y : α, (x ≠ y ∧ P x y)) :="
+  ]
+}

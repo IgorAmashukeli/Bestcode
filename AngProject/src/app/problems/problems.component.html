@@ -1,0 +1,90 @@
+<head>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+</head>
+<app-navigation_bar></app-navigation_bar>
+<div class="main-body-problems">
+  <ng-container>
+    <div *ngIf="!(this.loading$ | async)" class="table-wrapper">
+      <table>
+        <thead>
+          <tr class="problem-title">
+            <th class="problems-header">
+              <img
+                src="../../assets/images/problem_backwards.png"
+                class="image-button"
+                routerComing
+                routerLink="/{{ this.course_type }}"
+              />
+            </th>
+            <th colspan="2" class="problems-header">
+              {{ this.course_title }} problems
+            </th>
+            <th></th>
+          </tr>
+          <tr class="problem-header">
+            <th class="problems-header3">Title</th>
+            <th class="problems-header3">Problem status</th>
+            <th class="problems-header3">Difficulty</th>
+            <th class="problems-header3">Solution</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let value of problemArray; let i = index">
+            <tr class="problem-body">
+              <td
+                class="problems-name"
+                routerLink="{{ this.router.url }}/{{ i }}"
+              >
+                {{ i + 1 }}. {{ value["content"]["title"] }}
+              </td>
+              <ng-container>
+                <td
+                  *ngIf="authService.loggedIn$ | async"
+                  class="problems-not-solved"
+                  [ngClass]="{
+                    'problems-not-solved': user_statuses[i] == 'Not solved',
+                    'problems-solved': user_statuses[i] == 'Solved'
+                  }"
+                >
+                  {{ user_statuses[i] }}
+                </td>
+                <td
+                  *ngIf="!(authService.loggedIn$ | async)"
+                  class="problems-not-signed"
+                >
+                  You are currently logged out
+                </td>
+              </ng-container>
+              <td
+                [ngClass]="{
+                  'problems-easy': value['content']['difficulty'] == 'Easy',
+                  'problems-medium': value['content']['difficulty'] == 'Medium',
+                  'problems-hard': value['content']['difficulty'] == 'Hard'
+                }"
+              >
+                {{ value["content"]["difficulty"] }}
+              </td>
+              <td class="problems-solution-coming">
+                <button
+                  class="youtube-button"
+                  (click)="openSolutionDialog(value['content']['video_id'])"
+                >
+                  <i
+                    class="fa fa-youtube-play"
+                    style="font-size: 25px; color: white"
+                  ></i>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="this.loading$ | async" class="loader-container">
+      <div class="loader"></div>
+    </div>
+  </ng-container>
+</div>

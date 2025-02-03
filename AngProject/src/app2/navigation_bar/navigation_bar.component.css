@@ -1,0 +1,167 @@
+mat-toolbar {
+  width: 100%;
+  height: 100px;
+  background-color: rgb(68, 68, 68);
+}
+
+.navbar {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 20px;
+}
+
+.links-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.logo-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.logo-container2 {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.logo-container img {
+  height: 60%;
+}
+
+.logo-container2 img {
+  height: 60%;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.picture {
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.links-container a {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-right: 30px;
+  margin-left: 20px;
+  text-decoration: none;
+  max-width: 20%;
+}
+
+.links-container a :hover {
+  box-shadow: rgba(0, 0, 0, 0.1);
+}
+
+.home {
+  color: rgb(249, 38, 114);
+}
+
+.math {
+  color: rgb(253, 151, 31);
+}
+
+.programming {
+  color: rgb(102, 217, 239);
+}
+
+.sign-in-button {
+  font-size: 1.4rem;
+  font-weight: bolder;
+  padding: 15px 25px;
+  background-color: rgb(174, 129, 255);
+  color: rgb(46, 46, 46);
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition-duration: 0.4s;
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.logo-container img:hover {
+  box-shadow: 0 4px 8px rgba(68, 68, 68);
+}
+
+.links-container a:hover {
+  box-shadow: 0 4px 8px rgba(68, 68, 68);
+}
+
+.home:hover {
+  color: rgb(255, 106, 182);
+}
+
+.math:hover {
+  color: rgb(255, 220, 100);
+}
+
+.programming:hover {
+  color: rgb(170, 255, 255);
+}
+
+.sign-in-button:hover {
+  background-color: rgb(242, 198, 255);
+}
+
+.logo-image {
+  width: 80px;
+  height: 80px;
+}
+
+@media screen and (max-width: 1000px) {
+  mat-toolbar {
+    height: 80px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  mat-toolbar {
+    height: 50px;
+  }
+  .logo-image {
+    width: 40px;
+    height: 40px;
+  }
+  .links-container a {
+    font-size: 1rem;
+    margin-right: 10px;
+  }
+
+  .sign-in-button {
+    font-size: 0.8rem;
+    padding: 8px 15px;
+    margin-right: 5px;
+    border-radius: 5px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  mat-toolbar {
+    height: 30px;
+  }
+  .logo-image {
+    width: 20px;
+    height: 20px;
+  }
+  .links-container a {
+    font-size: 0.5rem;
+    margin-right: 10px;
+  }
+
+  .sign-in-button {
+    font-size: 0.5rem;
+    padding: 4px 8px;
+    margin-right: 2px;
+    border-radius: 2px;
+  }
+}

@@ -1,0 +1,28 @@
+<body>
+  <div>
+    <button class="close-btn" (click)="closeDialog()">X</button>
+    <div
+      [ngClass]="{
+        'title-container': this.course_type,
+        'title-container2': !this.course_type
+      }"
+    >
+      Video solution
+    </div>
+  </div>
+
+  <div class="pop-window" style="width: 100%">
+    <div *ngIf="videoUrl">
+      <iframe
+        _ngcontent-jib-c38=""
+        title="YouTube video player"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen=""
+        class="video"
+        [src]="transform()"
+      >
+      </iframe>
+    </div>
+  </div>
+</body>

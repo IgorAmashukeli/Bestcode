@@ -1,0 +1,105 @@
+<div #navigationBar><app-navigation_bar></app-navigation_bar></div>
+<div #toolbar>
+  <mat-toolbar
+    style="
+      border-bottom: solid;
+      border-color: rgb(68, 68, 68);
+      border-width: 20px;
+    "
+  >
+    <div style="display: flex; height: 100%; width: 100%; margin-left: 1%">
+      <div style="width: 13.66667%; display: flex; align-items: center">
+        <img
+          class="picture-menu"
+          routerLink="{{ this.parent_route }}"
+          src="../../assets/images/problem_backwards.png"
+        />
+      </div>
+      <div
+        style="width: 20.66667%; display: flex; align-items: center"
+        class="small-menu"
+        [class.selected-small-menu]="selectedNavItem === 'description_page'"
+        (click)="selectNavItem('description_page')"
+      >
+        Description
+      </div>
+      <div
+        style="width: 16.66667%; display: flex; align-items: center"
+        class="small-menu"
+        [class.selected-small-menu]="selectedNavItem === 'submissions_page'"
+        (click)="selectNavItem('submissions_page')"
+      >
+        Submissions
+      </div>
+      <ng-container *ngIf="authService.loggedIn$ | async">
+        <div
+          *ngIf="!this.course_flag"
+          style="width: 16.66667%; display: flex; align-items: center"
+        >
+          <button class="run-button" (click)="run()">Run</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!(authService.loggedIn$ | async)">
+        <div
+          *ngIf="!this.course_flag"
+          style="width: 16.66667%; display: flex; align-items: center"
+        >
+          <button class="run-button" (click)="submitNotSignedIn(0)">Run</button>
+        </div>
+      </ng-container>
+      <ng-container>
+        <div
+          *ngIf="authService.loggedIn$ | async"
+          style="width: 16.66667%; display: flex; align-items: center"
+        >
+          <button class="submit-button" (click)="submit()">Submit</button>
+        </div>
+        <div
+          *ngIf="!(authService.loggedIn$ | async)"
+          style="width: 16.66667%; display: flex; align-items: center"
+        >
+          <button class="submit-button" (click)="submitNotSignedIn(1)">
+            Submit
+          </button>
+        </div>
+      </ng-container>
+    </div>
+  </mat-toolbar>
+</div>
+<div
+  [style.height]="this.splitHeight"
+  style="
+    border-left: solid;
+    border-color: rgb(68, 68, 68);
+    border-width: 20px;
+    height: auto;
+  "
+>
+  <as-split direction="horizontal" gutterSize="0">
+    <as-split-area size="50">
+      <left-workspace
+        [selectedNavItem]="selectedNavItem"
+        [loading_submission]="this.loading_submission"
+      ></left-workspace>
+    </as-split-area>
+    <as-split-area size="50">
+      <right-workspace
+        [mathResponse]="math_response"
+        [programmingResponse]="programming_response"
+        [OK]="OK"
+        [proof_loading]="proof_loading"
+        [code_loading]="code_loading"
+        [selectedLanguage]="selectedLanguage"
+        [status]="status"
+        [WA]="WA"
+        [show_tests]="show_tests"
+        [test_case_wa_run]="test_case_wa_run"
+        [input_wa_run]="input_wa_run"
+        [output_wa_run]="output_wa_run"
+        [your_output_wa_run]="your_output_wa_run"
+        [submit_not_run]="submit_not_run"
+      ></right-workspace>
+    </as-split-area>
+  </as-split>
+</div>
+<div style="height: 20px; background-color: rgb(68, 68, 68)"></div>

@@ -1,0 +1,164 @@
+<div
+  *ngIf="authService.loggedIn$ && table_view | async"
+  class="submissions-body"
+>
+  <div class="submissions-title">Your last 3 submissions</div>
+  <ng-container *ngIf="!(this.loading$ | async)">
+    <table
+      *ngIf="!this.course_type && this.submissions_array.length > 0"
+      style="width: 80%; margin-left: 10%; margin-right: 10%; margin-top: 40px"
+    >
+      <thead>
+        <tr style="color: white; font-size: 20px">
+          <th style="width: 25%">Time</th>
+          <th style="width: 25%">Status</th>
+          <th style="width: 25%">Runtime</th>
+          <th style="width: 25%">Code</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container
+          *ngFor="let value of this.submissions_array; let i = index"
+        >
+          <tr style="color: white; font-size: 2vh">
+            <td style="width: 25%">{{ this.submissions_array[this.submissions_array.length - 1 - i]["time"] }}</td>
+            <td
+              style="width: 25%"
+            >
+              <button
+              (click)="open_log(this.submissions_array.length - 1 - i)"
+              [ngClass]="{
+                'status-OK': this.submissions_array[this.submissions_array.length - 1 - i]['status'] == 'OK',
+                'status-not-OK': this.submissions_array[this.submissions_array.length - 1 - i]['status'] != 'OK'
+              }"
+              style="height: 100%; width: 100%"
+            >
+            {{ this.submissions_array[this.submissions_array.length - 1 - i]["status"] }}
+            </button>
+              
+            </td>
+            <td style="width: 25%" [ngClass]="{'runtime-OK' : this.submissions_array[this.submissions_array.length - 1 - i]['status'] == 'OK',
+          '         runtime-not-OK' : this.submissions_array[this.submissions_array.length - 1 - i]['status'] != 'OK' }">
+            {{ this.submissions_array[this.submissions_array.length - 1 - i]["runtime"] }}</td>
+            <td style="width: 25%">
+              
+              <button
+                (click)="open_code(this.submissions_array.length - 1 - i)"
+                class="open-code"
+                style="height: 100%; width: 100%"
+              >
+                Open code
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <table
+      *ngIf="this.course_type && this.submissions_array.length > 0"
+      style="width: 80%; margin-left: 10%; margin-right: 10%; margin-top: 40px"
+    >
+      <thead>
+        <tr style="color: white; font-size: 20px">
+          <th style="width: 33.33%">Time</th>
+          <th style="width: 33.33%">Status</th>
+          <th style="width: 33.33%">Proof</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container
+          *ngFor="let value of this.submissions_array; let i = index"
+        >
+          <tr style="color: white; font-size: 2vh">
+            <td class="time-class" style="width: 33.3%">
+              {{
+                this.submissions_array[this.submissions_array.length - 1 - i][
+                  "time"
+                ]
+              }}
+            </td>
+            <td
+              style="width: 33.3%"
+            >
+            <button
+                (click)="open_log(this.submissions_array.length - 1 - i)"
+                [ngClass]="{
+                  'status-OK': this.submissions_array[this.submissions_array.length - 1 - i]['status'] == 'OK',
+                  'status-not-OK': this.submissions_array[this.submissions_array.length - 1 - i]['status'] != 'OK'
+                }"
+                style="height: 100%; width: 100%"
+              >
+              {{
+                this.submissions_array[this.submissions_array.length - 1 - i][
+                  "status"
+                ]
+              }}
+              </button>
+            </td>
+            <td style="width: 33.3%">
+              <button
+                (click)="open_proof(this.submissions_array.length - 1 - i)"
+                class="open-proof"
+                style="height: 100%; width: 100%"
+              >
+                Open proof
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+    <div
+      class="not-signed-in-submissions"
+      *ngIf="this.submissions_array.length == 0"
+    >
+      No submissions yet
+    </div>
+  </ng-container>
+  <ng-container *ngIf="this.loading$ | async">
+    <div *ngIf="this.loading$ | async" class="loader-container">
+      <div class="loader"></div>
+    </div>
+  </ng-container>
+  <div style="height: 100vh"></div>
+</div>
+<div class="not-signed-in-submissions" *ngIf="!(authService.loggedIn$ | async)">
+  To view submission, please sign in
+</div>
+<div *ngIf="!(table_view | async)">
+
+  <div *ngIf="code_view | async">
+        <img
+          (click)="close_proof()"
+          class="picture-menu"
+          src="../../assets/images/problem_backwards.png"
+        />
+        <div class="submission-proof-title">
+          <p>Your solution:</p>
+        </div>
+      
+    <ngx-monaco-editor
+      style="height: 100vh; width: 100vw; margin-top: 30px"
+      [options]="{
+      language: this.submission_language,
+    }"
+      [(ngModel)]="this.submission_code"
+    ></ngx-monaco-editor>
+  </div>
+  <div *ngIf="!(code_view | async)">
+    <img
+          (click)="close_log()"
+          class="picture-menu"
+          src="../../assets/images/problem_backwards.png"
+        />
+        <div class="submission-proof-title">
+          <p>Your log:</p>
+        </div>
+        <div
+        [ngClass]="{ 'result-OK': OK, 'result-Error': !OK }"
+      >
+        {{this.submission_log}}
+      </div>
+    
+  </div>
+</div>

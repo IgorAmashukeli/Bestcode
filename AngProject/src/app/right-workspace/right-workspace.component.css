@@ -1,0 +1,138 @@
+.right-workspace-body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background-color: rgb(32, 28, 28);
+  background-size: cover;
+}
+
+::ng-deep
+  .as-vertical[_nghost-ng-c4106337314]
+  > .as-split-gutter[_ngcontent-ng-c4106337314] {
+  width: 100%;
+  height: 10px;
+  background-color: rgb(68, 68, 68) !important;
+  background-size: 100% 3.5px !important;
+}
+
+::ng-deep
+  .as-vertical[_nghost-ng-c4106337314]
+  > .as-split-gutter[_ngcontent-ng-c4106337314]:hover {
+  background-color: rgb(20, 136, 244) !important;
+}
+
+.case-button {
+  width: 120px;
+  font-size: 15px;
+  padding: 10px 20px;
+  font-weight: bolder;
+  background-color: rgb(50, 45, 45);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.case-button-selected {
+  width: 120px;
+  font-size: 15px;
+  padding: 10px 20px;
+  font-weight: bolder;
+  background-color: rgb(150, 145, 145);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.case-button-wa {
+  width: 120px;
+  font-size: 15px;
+  padding: 10px 20px;
+  font-weight: bolder;
+  background-color: red;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+
+
+.case-button-selected-wa {
+  width: 120px;
+  font-size: 15px;
+  padding: 10px 20px;
+  font-weight: bolder;
+  background-color: rgb(249, 38, 114);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+
+.status-not-Ok {
+  text-align: left;
+  color: red;
+  font-size: 30px;
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+
+.status-OK {
+  text-align: left;
+  color: green;
+  font-size: 30px;
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+.result-OK {
+  text-align: center;
+  margin-top: 20px;
+  margin-left: 20px;
+  color: green;
+}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+}
+
+.loader {
+  border: 4px solid rgb(253, 151, 31);
+  border-left-color: rgb(102, 217, 239);
+  margin-top: 40px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+.result-Error {
+  text-align: center;
+  margin-top: 20px;
+  margin-left: 20px;
+  color: red;
+}
+
+.cls {
+  color: red;
+  text-align: center;
+  font-size: 30px;
+  margin-top: 300px;
+}

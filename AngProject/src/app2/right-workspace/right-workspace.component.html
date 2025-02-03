@@ -1,0 +1,306 @@
+<div class="right-workspace-body" style="height: 100%">
+  <as-split direction="vertical" [gutterSize]="15" style="height: 100%">
+    <as-split-area size="75">
+      <div
+        style="
+          border-right: solid;
+          border-width: 20px;
+          border-color: rgb(68, 68, 68);
+          height: 100%;
+        "
+      >
+        <ng-container *ngIf="this.authService.loggedIn$ | async">
+          <ngx-monaco-editor
+            id="mon-editor"
+            style="height: 100vh; width: 100vw"
+            [options]="{
+            language: this.selectedLanguage,
+          }"
+            [(ngModel)]="cur_code"
+          ></ngx-monaco-editor>
+        </ng-container>
+        <ng-container *ngIf="!(this.authService.loggedIn$ | async)">
+          <div class="cls">To view code editor, please, sign in</div>
+        </ng-container>
+      </div>
+    </as-split-area>
+    <as-split-area
+      size="25"
+      style="
+        border-right: solid;
+        border-width: 20px;
+        border-color: rgb(68, 68, 68);
+      "
+    >
+      <ng-container>
+        <div *ngIf="!(this.proof_loading | async)" class="loader-container">
+          <div class="loader"></div>
+        </div>
+        <div *ngIf="!(this.code_loading | async)" class="loader-container">
+          <div class="loader"></div>
+        </div>
+        <div *ngIf="this.code_loading || this.proof_loading | async">
+          <div
+          *ngIf="!this.course_type"
+          [ngClass]="{'status-OK': OK, 'status-not-Ok' : !OK }"
+        >
+          {{this.status}}
+        </div>
+        <div
+          *ngIf="this.example_array.length > 0 && !this.course_type && this.show_tests"
+          style="display: flex; flex-direction: column"
+        >
+          <div
+            style="
+              text-align: left;
+              color: white;
+              font-size: 30px;
+              margin-left: 20px;
+            "
+          >
+            Testcases
+          </div>
+          <div
+            *ngIf="this.example_array.length > 0"
+            style="
+              margin-top: 30px;
+              margin-left: 20px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 40px;
+            "
+          >
+            <ng-container
+              *ngFor="let value of this.example_array; let i = index"
+            >
+              <div [style.width.%]="100 / example_array.length">
+                <button
+                  [ngClass]="{
+                    'case-button': this.selectedCase !== i && this.test_case_wa_run !== i,
+                    'case-button-wa' : this.selectedCase !== i && this.test_case_wa_run == i,
+                    'case-button-selected': this.selectedCase == i && this.test_case_wa_run !== i,
+                    'case-button-selected-wa' : this.selectedCase == i && this.test_case_wa_run == i
+                  }"
+                  (click)="changeSelectedCase(i)"
+                >
+                  Case {{ i + 1 }}
+                </button>
+              </div>
+            </ng-container>
+          </div>
+          <div
+            style="
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 40px;
+            margin-left: 20px;
+          "
+          >
+            Input:
+            </div>
+            <div
+              style="
+                height: 60px;
+                color: white;
+                font-weight: bold;
+                font-size: 20px;
+                margin-top: 40px;
+                background-color: rgb(50, 45, 45);
+                display: flex;
+                align-items: center;
+                margin-left: 20px;
+              "
+            >
+            <div style="margin-top: 15px; margin-left: 10px">
+              {{
+                parseInputOutput(this.example_array[this.selectedCase])["inp"]
+              }}
+            </div>
+          </div>
+          
+          <div
+            style="
+              color: white;
+              font-weight: bold;
+              font-size: 20px;
+              margin-top: 40px;
+              margin-left: 20px;
+            "
+          >
+            Output:
+          </div>
+          <div
+            style="
+              height: 60px;
+              color: white;
+              font-weight: bold;
+              font-size: 20px;
+              margin-top: 40px;
+              margin-left: 20px;
+              background-color: rgb(50, 45, 45);
+            "
+          >
+            <div style="margin-top: 15px; margin-left: 10px">
+              {{
+                parseInputOutput(this.example_array[this.selectedCase])["outp"]
+              }}
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="this.example_array.length == 0"
+          style="display: flex; flex-direction: column"
+        ></div>
+        <ng-container *ngIf="this.authService.loggedIn$ | async">
+          <div
+            *ngIf="this.proof_loading | async"
+            [ngClass]="{ 'result-OK': OK, 'result-Error': !OK }"
+          >
+            {{ mathResponse }}
+          </div>
+          <div
+            *ngIf="this.code_loading | async"
+            [ngClass]="{ 'result-OK': OK, 'result-Error': !OK }"
+          >
+            <ng-container>
+              <div
+              *ngIf="this.WA && this.submit_not_run"
+              style="
+                text-align: left;
+                color: white;
+                font-size: 30px;
+              "
+            >
+              <div style="margin-bottom: 20px;">
+              First wrong testcase:
+              </div>
+              <button
+                    class="case-button-selected-wa"
+                  >
+                    Case {{ this.test_case_wa_run }}
+                  </button>
+                <div
+                style="
+                color: white;
+                font-weight: bold;
+                font-size: 20px;
+                margin-top: 40px;
+              "
+              >
+                Input:
+                </div>
+                <div
+                  style="
+                    height: 60px;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 20px;
+                    margin-top: 40px;
+                    background-color: rgb(50, 45, 45);
+                    display: flex;
+                    align-items: center;
+                  "
+                >
+                  <div style="margin-top: 15px; margin-left: 10px">
+                    {{this.input_wa_run}}
+                  </div>
+                </div>
+                <div
+                  style="
+                    color: white;
+                    font-weight: bold;
+                    font-size: 20px;
+                    margin-top: 40px;
+                  "
+                >
+                  Output:
+                </div>
+                <div
+                  style="
+                    height: 60px;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 20px;
+                    margin-top: 40px;
+                    background-color: rgb(50, 45, 45);
+                    display: flex;
+                    align-items: center;
+                  "
+                >
+                  <div style="margin-top: 15px; margin-left: 10px">
+                    {{this.output_wa_run}}
+                  </div>
+                  
+                </div>
+                  <div
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      font-size: 20px;
+                      margin-top: 40px;
+                    "
+                  >
+                    Your output
+                  </div>
+                  <div
+                    style="
+                      height: 60px;
+                      color: white;
+                      font-weight: bold;
+                      font-size: 20px;
+                      margin-top: 40px;
+                      background-color: rgb(50, 45, 45);
+                      display: flex;
+                      align-items: center;
+                    "
+                  >
+                    <div style="margin-top: 15px; margin-left: 10px">
+                      {{this.your_output_wa_run}}
+                    </div>
+                    
+                  </div>
+              </div>
+              <div *ngIf="!this.show_tests && ! (this.WA && this.submit_not_run)">
+                {{ programmingResponse }}
+              </div>
+              
+              <div *ngIf="this.show_tests && this.WA && this.selectedCase == this.test_case_wa_run">
+                  <div
+                  style="
+                    text-align: left;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 20px;
+                    margin-top: 40px;
+                  "
+                >
+                  Your output:
+                  <div
+                  style="
+                    height: 60px;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 20px;
+                    margin-top: 40px;
+                    background-color: rgb(50, 45, 45);
+                    display: flex;
+                    align-items: center;
+                  "
+                  >
+                    <div style="margin-top: 10px; margin-left: 10px">
+                      {{ your_output_wa_run }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+            
+          </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </as-split-area>
+  </as-split>
+</div>
