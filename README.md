@@ -8,6 +8,7 @@ Online judge web application
 [lean](https://github.com/IgorAmashukeli/Bestcode/blob/main/DockerLEAN/Dockerfile)
 
 The first one should be named gcc
+
 The second should be named lean_image
 
 ! Don't create any containers before running the application.
@@ -34,7 +35,7 @@ The application assumes no containers were created prior running
 
 8) Try to use add_problems.js in problemAdding to configure your database documention, according to the way it is explained above
 
-(you should documents with exactly same structure)
+(you should create documents with exactly same structure)
 
 (you can see examples of problems in output0.json)
 
