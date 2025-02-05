@@ -317,7 +317,6 @@ get_document("output6.json", (error, document1) => {
 
 
 
-// const uri = "mongodb+srv://amashukeliim1150:cJXBKmUQUAqkinY7@backenddb.jeqmruu.mongodb.net/?retryWrites=true&w=majority&appName=BackendDB";
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
