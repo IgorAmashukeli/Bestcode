@@ -327,18 +327,18 @@ const client = new MongoClient(uri, {
 });
 
 
-const first_doc = {
-    "id": 0,
+const second_doc = {
+    "id": 2,
     "course": "/math/logic",
-    "title": "Propositional tautologies",
+    "title": "Quantifiers validities",
     "difficulty": "Easy",
     "video_id": "y3svPgyGnLc",
     "accepted": 0,
     "submitted": 0,
-    "description_text": "This is task to prove, using <b>LEAN 4</b> language. <br> Proofs should be done, by writing constructive <b>proof terms with the help of propositional constructors and destructors or tactics</b>. <br> As this is the first proving task, the ONLY allowed terms and constructions are the ones, that are used in natural deduction. They can be found here: <a href=\"https://github.com/IgorAmashukeli/MathLean/blob/main/0_Logic/0_DeductionRules/Rules.lean\">Natural deduction rules</a>",
+    "description_text": "This is task to prove, using <b>LEAN 4</b> language. <br> Proofs should be done, by writing constructive <b>proof terms with the help of propositional constructors and destructors</b>. <br> In each math problem you will be given a list of permitted constructors, destructors and theorems. <br> To proof each theorem, remove <b>\"sorry\"</b> and replace it with <b>proof term</b>. <br> <br> You can use following constructors and destructors <br><br><i>Constructor and destructor for universal quantifier:</i><br><i>Constructor: </i> <b> fun (x : α) => u </b> creates <b> ∀ x : α, u</b> proposition from <b>α</b> and <b>u</b> proposition, where u can depend on x</br><i>Destructor: </i> <b> (h : ∀ x : α, u) (x₀ : α) </b> creates <b>u[x₀/x]</b> (u, where all free x variables are replaced with x₀) proposition from <b>∀ x : α, u</b> proposition and <b>x₀ : α</b> term <br><br><i>Constructor and destructor for existential quantifier:</i><br><i>Constructor: </i> <b> Exists.intro (x₀ : α) P </b> creates <b>∃ x : α, P</b> proposition from <b>x₀ : α </b> term and  <b> P </b  proposition, where P can depend on x₀<br><i>Destructor: </i> <b> Exists.elim (h : ∃ x : α, P) (g : ∀ x : α, P → q) </b> creates <b>q</b> proposition from <b>∃ x : α, P </b> proposition and <b>∀ x : α, P → q</b> proposition<br>If you know that Inhabited α, you can also use Inhabited.default : α constructorYou can also use all the constructors and destructors for the propositional theorems and use previously proved theorems",
     "examples": [],
     "constraints": [],
-    "note": "Note that you can only use <b>ByContradiction</b> and <b>by_contradiction</b> tactic for the theorems, defined after <i>open Classical</i>.  <br> <br> For reference, see this documentation: <a href=\"https://leanprover.github.io/theorem_proving_in_lean4/title_page.html\">LEAN 4 proving</a>",
+    "note": "Note that you can only use <b>ByContradiction</b> for the theorems, defined after <i>open Classical</i>. <br> <br> For reference, see this documentation: <a href=\"https://leanprover.github.io/theorem_proving_in_lean4/title_page.html\">LEAN 4 proving</a>",
     "languages": [
       [
         "LEAN",
@@ -346,80 +346,48 @@ const first_doc = {
       ]
     ],
     "initial_codes": {
-      "lean": "--your proof goes here\n\ntheorem neg_true : ¬ True ↔ False := sorry\n\ntheorem neg_false : ¬ False ↔ True := sorry\n\ntheorem conj_true (p : Prop) : p ∧ True ↔ p := sorry\n\ntheorem conj_false (p : Prop) : p ∧ False ↔ False := sorry\n\ntheorem disj_true (p : Prop) : p ∨ True ↔ True := sorry\n\ntheorem disj_false (p : Prop) : p ∨ False ↔ p := sorry\n\ntheorem impl_true (p : Prop) : p → True ↔ True := sorry\n\ntheorem true_impl (p : Prop) : True → p ↔ p := sorry\n\ntheorem impl_false (p : Prop) : p → False ↔ ¬ p := sorry\n\ntheorem false_impl (p : Prop) : False → p ↔ True := sorry\n\ntheorem axiomatic_rule (p : Prop) : p → p := sorry\n\ntheorem trivial_equivalence (p : Prop) : p ↔ p := sorry\n\ntheorem conj_idemp (p : Prop) : p ↔ p ∧ p := sorry\n\ntheorem disj_idemp (p : Prop) : p ↔ p ∨ p := sorry\n\ntheorem conj_comm (p q : Prop) : (p ∧ q) ↔ (q ∧ p) := sorry\n\ntheorem disj_comm (p q : Prop) : (p ∨ q) ↔ (q ∨ p) := sorry\n\ntheorem impl_comm (p q : Prop) : (p ↔ q) ↔ (q ↔ p) := sorry\n\ntheorem conj_assoc (p q r : Prop) : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r) := sorry\n\ntheorem disj_assoc (p q r : Prop) : (p ∨ q) ∨ r ↔ p ∨ (q ∨ r) := sorry\n\ntheorem conj_disj_distrib (p q r : Prop) : p ∧ (q ∨ r) ↔ (p ∧ q) ∨ (p ∧ r) := sorry\n\ntheorem disj_conj_distrib (p q r : Prop) : p ∨ (q ∧ r) ↔ (p ∨ q) ∧ (p ∨ r) := sorry\n\ntheorem morgan_disj (p q : Prop) :  ¬(p ∨ q) ↔ ¬p ∧ ¬q := sorry\n\ntheorem morgan_conj_mpr (p q : Prop) : ¬p ∨ ¬q → ¬(p ∧ q) := sorry\n\ntheorem impl_def_mpr (p q : Prop) : (¬p ∨ q) → (p → q) := sorry\n\ntheorem neg_imp_def_mpr (p q : Prop) : p ∧ ¬q → ¬(p → q) := sorry\n\ntheorem neg_to_impl (p q : Prop) : ¬p → (p → q) := sorry\n\ntheorem contraposition_mp (p q : Prop) : (p → q) → (¬q → ¬p) := sorry\n\ntheorem exportation_law (p q r : Prop) : (p → (q → r)) ↔ (p ∧ q → r) := sorry\n\ntheorem cases_impl_left (p q r : Prop) : ((p ∨ q) → r) ↔ (p → r) ∧ (q → r) := sorry\n\ntheorem syllogism (p q r : Prop) : (p → q) → (q → r) → (p → r) := sorry\n\ntheorem neg_congr (p q : Prop) : (p ↔ q) → (¬p ↔ ¬q) := sorry\n\ntheorem disj_congr (p q r : Prop) : (p ↔ q) → ((p ∨ r) ↔ (q ∨ r)) := sorry\n\ntheorem conj_congr (p q r : Prop) : (p ↔ q) → ((p ∧ r) ↔ (q ∧ r)) := sorry\n\ntheorem impl_congr_right (p q r : Prop) : (p ↔ q) → ((p → r) ↔ (q → r)) := sorry\n\ntheorem impl_congr_left (p q r : Prop) : (p ↔ q) → ((r → p) ↔ (r → q)) := sorry\n\ntheorem iff_congr_ (p q r : Prop) : (p ↔ q) → ((p ↔ r) ↔ (q ↔ r)) := sorry\n\ntheorem iff_conj_intro(p q r : Prop) : (p ↔ q) → (p ↔ r) → (p ↔ (q ∧ r)) := sorry\n\ntheorem iff_transitivity (p q r : Prop) : (p ↔ q) → (q ↔ r) → (p ↔ r) := sorry\n\ntheorem no_contradiction (p : Prop) : ¬ (p ∧ ¬ p) := sorry\n\ntheorem double_negation_mp (p : Prop) : p → ¬¬ p := sorry\n\ntheorem negation_not_equiv (p : Prop) : ¬(p ↔ ¬p) := sorry\n\nopen Classical\n\ntheorem double_negation (p : Prop) : p ↔ ¬¬p := sorry\n\ntheorem tnd (p : Prop) : p ∨ ¬ p := sorry\n\ntheorem cases_analysis (p q : Prop) : (p → q) → (¬p → q) → q := sorry\n\ntheorem cases_impl_right (p q r : Prop) : (p → q ∨ r) → ((p → q) ∨ (p → r)) := sorry\n\ntheorem Morgan_disj (p q : Prop) : ¬ (p ∧ q) ↔ ¬p ∨ ¬q := sorry\n\ntheorem neg_imp_def (p q : Prop) : ¬ (p → q) ↔ p ∧ ¬ q := sorry\n\ntheorem imp_def (p q : Prop) : (p → q) ↔ (¬p ∨ q) := sorry\n\ntheorem contraposition (p q : Prop) : (p → q) ↔ (¬q → ¬p) := sorry\n\ntheorem peirce (p q : Prop) : (((p → q) → p) → p) := sorry\n\ndef xor_pr (p q : Prop) : Prop := (p ∧ ¬q) ∨ (¬p ∧ q)\n\nmacro l:term:10 \" ⊕ \" r:term:11 : term => `(xor_pr $l $r)\n\ntheorem xor_equiv_def (p q : Prop) : (p ⊕ q) ↔ ((p ∨ q) ∧ (¬ (p ∧ q))) :=  sorry\n\ntheorem xor_equal (p : Prop): ¬ (p ⊕ p) := sorry\n\ntheorem xor_neg (p : Prop) : (p ⊕ ¬ p) := sorry\n\ntheorem xor_comm  (p q : Prop) : (p ⊕ q) ↔ (q ⊕ p) := sorry\n\ntheorem xor_assoc (p q r : Prop) : ((p ⊕ q) ⊕ r) ↔ (p ⊕ (q ⊕ r)) := sorry"
+      "lean": "--your proof starts here\n\ntheorem uni (α : Type) : ∀ _ : α, True := sorry\n\ntheorem exi_uni_then_uni (α : Type) (P : α → Prop) : (∃ _ : α, ∀ x : α, P x) → (∀ x : α, P x) := sorry\n\ntheorem exi_exi_then_exi (α : Type) (P : α → Prop) : (∃ _ : α, ∃ x : α, P x) → (∃ x : α, P x) := sorry\n\ntheorem uni_uni_then_uni (α : Type) (P : α → Prop) : (∀ _ : α, ∀ x : α, P x) → (∀ x : α, P x) := sorry\n\ntheorem change_variable_uni (α : Type) (P: α → Prop) : (∀ x : α, P x) ↔ (∀ y : α, P y) := sorry\n\ntheorem change_variable_exi (α : Type) (P: α → Prop) : (∃ x : α, P x) ↔ (∃ y : α, P y) := sorry\n\ntheorem uni_congr (α : Type) (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∀ x : α, P x) ↔ (∀ x : α, Q x)) := sorry\n\ntheorem exi_congr (α : Type) (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∃ x : α, P x) ↔ (∃ x: α, Q x)) := sorry\n\ntheorem uni_comm (α : Type) (P : α →  β → Prop) : (∀ x : α, ∀ y : β, P x y) ↔ (∀ y : β, ∀ x : α, P x y) := sorry\n\ntheorem exi_comm (α : Type) (P : α → β → Prop) : (∃ x : α, ∃ y : β, P x y) ↔ (∃ y : β, ∃ x : α, P x y) := sorry\n\ntheorem exi_uni_then_uni_exi (α : Type) (P : α → β → Prop) : (∃ x : α, ∀ y : β, P x y) → (∀ y : β, ∃ x : α, P x y) := sorry\n\ntheorem uni_conj (α : Type) (P Q: α → Prop) : (∀ x: α, P x ∧ Q x) ↔ (∀ x : α, P x) ∧ (∀ x : α, Q x) := sorry\n\ntheorem exi_disj (α : Type) (P Q : α → Prop) : (∃ x : α, P x ∨ Q x) ↔ (∃ x : α, P x) ∨ (∃ x: α, Q x) := sorry\n\ntheorem morgan_uni (α : Type) (P : α → Prop) : (∀ x : α, ¬ P x) ↔ (¬ ∃ x : α, P x) := sorry\n\ntheorem morgan_exi_mp (α : Type) (P : α → Prop) : (∃ x : α, ¬ P x) →  (¬ ∀ x : α, P x) := sorry\n\ntheorem brackets_exi_conj (α : Type) (P : Prop) (Q : α → Prop) : (∃ x : α, P ∧ Q x) ↔ (P ∧ ∃ x : α, Q x) := sorry\n\ntheorem brackets_uni_conj_mpr (α : Type) (P : Prop) (Q : α → Prop) : (P ∧ ∀ x : α, Q x) → (∀ x : α, P ∧ Q x) := sorry\n\ntheorem brackets_exi_disj_mp (α : Type) (P : Prop) (Q : α → Prop) : (∃ x : α, P ∨ Q x) → (P ∨ ∃ x : α, Q x) := sorry\n\ntheorem brackets_uni_disj_mpr (α : Type) (P : Prop) (Q : α → Prop) : (P ∨ ∀ x : α, Q x) → (∀ x : α, P ∨ Q x) := sorry\n\ntheorem brackets_left_uni_impl (α : Type) (P : Prop) (Q : α → Prop) : (P → ∀ x : α, Q x) ↔ (∀ x : α, (P → Q x)) := sorry\n\ntheorem brackets_left_exi_impl_mpr (α : Type) (P : Prop) (Q : α → Prop) : (∃ x : α, (P → Q x)) → (P → ∃ x : α, Q x) := sorry\n\ntheorem brackets_right_uni_impl_mpr (α : Type) (P : α → Prop) (Q : Prop) : (∃ x : α, (P x → Q)) → ((∀ x : α, P x) → Q) := sorry\n\ntheorem brackets_right_exi_impl (α : Type) (P : α → Prop) (Q : Prop) : ((∃ x : α, P x) → Q) ↔ (∀ x : α, (P x → Q)) := sorry\n\ntheorem inh_exi (α : Type) [Inhabited α] : ∃ _ : α, True := sorry\n\ntheorem inh_uni_exi_then_exi [Inhabited α] (P : α → Prop) : (∀ _ : α, ∃ x : α, P x) → (∃ x : α, P x) := sorry\n\ntheorem inh_uni_then_exi (α : Type) [Inhabited α] (P : α → Prop) : (∀ x : α, P x) → (∃ x : α, P x) := sorry\n\ntheorem inh_brackets_uni_conj (α : Type) [Inhabited α] (P : Prop) (Q : α → Prop) : (∀ x : α, P ∧ Q x) ↔ (P ∧ ∀ x : α, Q x) := sorry\n\ntheorem inh_brackets_exi_disj (α : Type) [Inhabited α] (P : Prop) (Q : α → Prop) : (∃ x : α, P ∨ Q x) ↔ (P ∨ ∃ x : α, Q x) := sorry\n\nopen Classical\n\ntheorem brackets_uni_disj (α : Type) (P : Prop) (Q : α → Prop) : (∀ x : α, P ∨ Q x) ↔ (P ∨ ∀ x : α, Q x) := sorry\n\ntheorem morgan_exi (α : Type) (P : α → Prop) : (∃ x : α, ¬ P x) ↔ (¬ ∀ x : α, P x) := sorry\n\ntheorem inh_brackets_left_exi_impl (α : Type) [Inhabited α] (P : Prop) (Q : α → Prop) : (P → ∃ x : α, Q x) ↔ (∃ x : α, (P → Q x)) := sorry\n\ntheorem inh_brackets_right_uni_impl (α : Type) [Inhabited α] (P: α → Prop)  (Q : Prop) :  ((∀ x : α, P x) → Q) ↔ (∃ x : α, (P x → Q)) := sorry\n\ntheorem drinker_paradox (pub_visitor : Type) (is_drinking : pub_visitor → Prop) [Inhabited pub_visitor] : (∃ someone : pub_visitor, (is_drinking someone  → ∀ person : pub_visitor, is_drinking person)) := sorry"
     },
     "initial_language": "lean",
     "requirements": [
-      "theorem neg_true : ¬ True ↔ False",
-      "theorem neg_false : ¬ False ↔ True",
-      "theorem conj_true (p : Prop) : p ∧ True ↔ p",
-      "theorem conj_false (p : Prop) : p ∧ False ↔ False",
-      "theorem disj_true (p : Prop) : p ∨ True ↔ True",
-      "theorem disj_false (p : Prop) : p ∨ False ↔ p",
-      "theorem impl_true (p : Prop) : p → True ↔ True",
-      "theorem true_impl (p : Prop) : True → p ↔ p",
-      "theorem impl_false (p : Prop) : p → False ↔ ¬ p",
-      "theorem false_impl (p : Prop) : False → p ↔ True",
-      "theorem axiomatic_rule (p : Prop) : p → p",
-      "theorem trivial_equivalence (p : Prop) : p ↔ p",
-      "theorem conj_idemp (p : Prop) : p ↔ p ∧ p",
-      "theorem disj_idemp (p : Prop) : p ↔ p ∨ p",
-      "theorem conj_comm (p q : Prop) : (p ∧ q) ↔ (q ∧ p)",
-      "theorem disj_comm (p q : Prop) : (p ∨ q) ↔ (q ∨ p)",
-      "theorem impl_comm (p q : Prop) : (p ↔ q) ↔ (q ↔ p)",
-      "theorem conj_assoc (p q r : Prop) : (p ∧ q) ∧ r ↔ p ∧ (q ∧ r)",
-      "theorem disj_assoc (p q r : Prop) : (p ∨ q) ∨ r ↔ p ∨ (q ∨ r)",
-      "theorem conj_disj_distrib (p q r : Prop) : p ∧ (q ∨ r) ↔ (p ∧ q) ∨ (p ∧ r)",
-      "theorem disj_conj_distrib (p q r : Prop) : p ∨ (q ∧ r) ↔ (p ∨ q) ∧ (p ∨ r)",
-      "theorem morgan_disj (p q : Prop) :  ¬(p ∨ q) ↔ ¬p ∧ ¬q",
-      "theorem morgan_conj_mpr (p q : Prop) : ¬p ∨ ¬q → ¬(p ∧ q)",
-      "theorem impl_def_mpr (p q : Prop) : (¬p ∨ q) → (p → q)",
-      "theorem neg_imp_def_mpr (p q : Prop) : p ∧ ¬q → ¬(p → q)",
-      "theorem neg_to_impl (p q : Prop) : ¬p → (p → q)",
-      "theorem contraposition_mp (p q : Prop) : (p → q) → (¬q → ¬p)",
-      "theorem exportation_law (p q r : Prop) : (p → (q → r)) ↔ (p ∧ q → r)",
-      "theorem cases_impl_left (p q r : Prop) : ((p ∨ q) → r) ↔ (p → r) ∧ (q → r)",
-      "theorem syllogism (p q r : Prop) : (p → q) → (q → r) → (p → r)",
-      "theorem neg_congr (p q : Prop) : (p ↔ q) → (¬p ↔ ¬q)",
-      "theorem disj_congr (p q r : Prop) : (p ↔ q) → ((p ∨ r) ↔ (q ∨ r))",
-      "theorem conj_congr (p q r : Prop) : (p ↔ q) → ((p ∧ r) ↔ (q ∧ r))",
-      "theorem impl_congr_right (p q r : Prop) : (p ↔ q) → ((p → r) ↔ (q → r))",
-      "theorem impl_congr_left (p q r : Prop) : (p ↔ q) → ((r → p) ↔ (r → q))",
-      "theorem iff_congr_ (p q r : Prop) : (p ↔ q) → ((p ↔ r) ↔ (q ↔ r))",
-      "theorem iff_conj_intro(p q r : Prop) : (p ↔ q) → (p ↔ r) → (p ↔ (q ∧ r))",
-      "theorem iff_transitivity (p q r : Prop) : (p ↔ q) → (q ↔ r) → (p ↔ r)",
-      "theorem no_contradiction (p : Prop) : ¬ (p ∧ ¬ p)",
-      "theorem negation_not_equiv (p : Prop) : ¬(p ↔ ¬p)",
-      "theorem double_negation_mp (p : Prop) : p → ¬¬ p",
-      "theorem tnd (p : Prop) : p ∨ ¬ p",
-      "theorem double_negation (p : Prop) : p ↔ ¬¬p",
-      "theorem cases_analysis (p q : Prop) : (p → q) → (¬p → q) → q",
-      "theorem cases_impl_right (p q r : Prop) : (p → q ∨ r) → ((p → q) ∨ (p → r))",
-      "theorem Morgan_disj (p q : Prop) : ¬ (p ∧ q) ↔ ¬p ∨ ¬q",
-      "theorem neg_imp_def (p q : Prop) : ¬ (p → q) ↔ p ∧ ¬ q",
-      "theorem imp_def (p q : Prop) : (p → q) ↔ (¬p ∨ q)",
-      "theorem contraposition (p q : Prop) : (p → q) ↔ (¬q → ¬p)",
-      "theorem peirce (p q : Prop) : (((p → q) → p) → p)",
-      "theorem xor_equiv_def (p q : Prop) : (p ⊕ q) ↔ ((p ∨ q) ∧ (¬ (p ∧ q)))",
-      "theorem xor_equal (p : Prop): ¬ (p ⊕ p)",
-      "theorem xor_neg (p : Prop) : (p ⊕ ¬ p)",
-      "theorem xor_comm (p q : Prop) : (p ⊕ q) ↔ (q ⊕ p)",
-      "theorem xor_assoc (p q r : Prop) : ((p ⊕ q) ⊕ r) ↔ (p ⊕ (q ⊕ r))"
+      "theorem uni (α : Type) : ∀ _ : α, True",
+      "theorem exi_uni_then_uni (α : Type) (P : α → Prop) : (∃ _ : α, ∀ x : α, P x) → (∀ x : α, P x)",
+      "theorem exi_exi_then_exi (α : Type) (P : α → Prop) : (∃ _ : α, ∃ x : α, P x) → (∃ x : α, P x)",
+      "theorem uni_uni_then_uni (α : Type) (P : α → Prop) : (∀ _ : α, ∀ x : α, P x) → (∀ x : α, P x)",
+      "theorem change_variable_uni (α : Type) (P: α → Prop) : (∀ x : α, P x) ↔ (∀ y : α, P y)",
+      "theorem change_variable_exi (α : Type) (P: α → Prop) : (∃ x : α, P x) ↔ (∃ y : α, P y)",
+      "theorem uni_congr (α : Type) (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∀ x : α, P x) ↔ (∀ x : α, Q x))",
+      "theorem exi_congr (α : Type) (P Q : α → Prop) : (∀ x : α, (P x ↔ Q x)) → ((∃ x : α, P x) ↔ (∃ x: α, Q x))",
+      "theorem uni_comm (α : Type) (P : α →  β → Prop) : (∀ x : α, ∀ y : β, P x y) ↔ (∀ y : β, ∀ x : α, P x y)",
+      "theorem exi_comm (α : Type) (P : α → β → Prop) : (∃ x : α, ∃ y : β, P x y) ↔ (∃ y : β, ∃ x : α, P x y)",
+      "theorem exi_uni_then_uni_exi (α : Type) (P : α → β → Prop) : (∃ x : α, ∀ y : β, P x y) → (∀ y : β, ∃ x : α, P x y)",
+      "theorem uni_conj (α : Type) (P Q: α → Prop) : (∀ x: α, P x ∧ Q x) ↔ (∀ x : α, P x) ∧ (∀ x : α, Q x)",
+      "theorem exi_disj (α : Type) (P Q : α → Prop) : (∃ x : α, P x ∨ Q x) ↔ (∃ x : α, P x) ∨ (∃ x: α, Q x)",
+      "theorem morgan_uni (α : Type) (P : α → Prop) : (∀ x : α, ¬ P x) ↔ (¬ ∃ x : α, P x)",
+      "theorem morgan_exi_mp (α : Type) (P : α → Prop) : (∃ x : α, ¬ P x) →  (¬ ∀ x : α, P x)",
+      "theorem brackets_exi_conj (α : Type) (P : Prop) (Q : α → Prop) : (∃ x : α, P ∧ Q x) ↔ (P ∧ ∃ x : α, Q x)",
+      "theorem brackets_uni_conj_mpr (α : Type) (P : Prop) (Q : α → Prop) : (P ∧ ∀ x : α, Q x) → (∀ x : α, P ∧ Q x)",
+      "theorem brackets_exi_disj_mp (α : Type) (P : Prop) (Q : α → Prop) : (∃ x : α, P ∨ Q x) → (P ∨ ∃ x : α, Q x)",
+      "theorem brackets_uni_disj_mpr (α : Type) (P : Prop) (Q : α → Prop) : (P ∨ ∀ x : α, Q x) → (∀ x : α, P ∨ Q x)",
+      "theorem brackets_left_uni_impl (α : Type) (P : Prop) (Q : α → Prop) : (P → ∀ x : α, Q x) ↔ (∀ x : α, (P → Q x))",
+      "theorem brackets_left_exi_impl_mpr (α : Type) (P : Prop) (Q : α → Prop) : (∃ x : α, (P → Q x)) → (P → ∃ x : α, Q x)",
+      "theorem brackets_right_uni_impl_mpr (α : Type) (P : α → Prop) (Q : Prop) : (∃ x : α, (P x → Q)) → ((∀ x : α, P x) → Q)",
+      "theorem brackets_right_exi_impl (α : Type) (P : α → Prop) (Q : Prop) : ((∃ x : α, P x) → Q) ↔ (∀ x : α, (P x → Q))",
+      "theorem inh_exi (α : Type) [Inhabited α] : ∃ _ : α, True",
+      "theorem inh_uni_exi_then_exi (α : Type) [Inhabited α] (P : α → Prop) : (∀ _ : α, ∃ x : α, P x) → (∃ x : α, P x)",
+      "theorem inh_uni_then_exi (α : Type) [Inhabited α] (P : α → Prop) : (∀ x : α, P x) → (∃ x : α, P x)",
+      "theorem inh_brackets_uni_conj (α : Type) [Inhabited α] (P : Prop) (Q : α → Prop) : (∀ x : α, P ∧ Q x) ↔ (P ∧ ∀ x : α, Q x)",
+      "theorem inh_brackets_exi_disj (α : Type) [Inhabited α] (P : Prop) (Q : α → Prop) : (∃ x : α, P ∨ Q x) ↔ (P ∨ ∃ x : α, Q x)",
+      "theorem brackets_uni_disj (α : Type) (P : Prop) (Q : α → Prop) : (∀ x : α, P ∨ Q x) ↔ (P ∨ ∀ x : α, Q x)",
+      "theorem morgan_exi (α : Type) (P : α → Prop) : (∃ x : α, ¬ P x) ↔ (¬ ∀ x : α, P x)",
+      "theorem inh_brackets_left_exi_impl (α : Type) [Inhabited α] (P : Prop) (Q : α → Prop) : (P → ∃ x : α, Q x) ↔ (∃ x : α, (P → Q x))",
+      "theorem inh_brackets_right_uni_impl (α : Type) [Inhabited α] (P: α → Prop)  (Q : Prop) :  ((∀ x : α, P x) → Q) ↔ (∃ x : α, (P x → Q))",
+      "theorem drinker_paradox (pub_visitor : Type) (is_drinking : pub_visitor → Prop) [Inhabited pub_visitor] : (∃ someone : pub_visitor, (is_drinking someone  → ∀ person : pub_visitor, is_drinking person))"
     ]
   }
 
 
 
-  async function condis(client) {
-    try {
-        await connect(client)
-        console.log("Connected to Mongo DB");
-    } catch (err) {
-        console.error("Error connecting to Mongo DB:", err);
-    } finally {
-        await disconnect(client)
-    }
-}
 
 
-//update_problem_to_database({ title: "Propositional tautologies" }, first_doc)
+update_problem_to_database({ title: "Quantifiers validities" }, second_doc)
